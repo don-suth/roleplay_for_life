@@ -12,6 +12,7 @@ import websockets
 RELAY_FOR_LIFE_PAGE = "https://www.relayforlife.org.au/fundraisers/UnigainsgoesUnisfast"
 SERVER_SAVE_STATE_FILENAME = "server_saved_state.json"
 HOST = ""
+PORT = ""
 
 class StateManager:
     def __init__(self):
@@ -30,13 +31,22 @@ class StateManager:
 sm = StateManager()
 
 async def handle_json(json_message, source_websocket):
-    match json_message["operation"]:
+    match json_message.get("operation"):
         case "update":
-            pass
+            # Update our local data, and then distribute to all clients.
+            sm.STATE.update(json_message.get("data", {}))
+            for client in sm.CLIENTS:
+                await client.send(json.dumps(json_message))
         case "check":
-            pass
-        case _:
-            pass
+            # Respond with the current state.
+            response = {
+                "operation": "update",
+                "data": sm.STATE
+            }
+            await source_websocket.send(json.dumps(response))
+        case None:
+            print("Message with unknown protocol received.")
+        
 
 async def get_donation_data():
     async with aiohttp.ClientSession() as session:
@@ -105,6 +115,23 @@ async def send_new_donations():
             })
             websockets.broadcast(sm.CLIENTS, json_message)
 
+async def state_manager(websocket):
+    sm.CLIENTS.add(websocket)
+    print(f"{websocket.remote_address}: connected")
+    try:
+        async for message in websocket:
+            try:
+                json_message = json.loads(message)
+            except Exception as e:
+                print(f"Received invalid JSON: {message}")
+                print(e)
+                continue
+            await handle_json(json_message, websocket)
+            print(f"{websocket.remote_address}: {message}")
+    finally:
+        sm.CLIENTS.remove(websocket)
+        print(f"{websocket.remote_address}: disconnected")
+        
 
 async def main():
     print("Starting server:")
@@ -119,5 +146,14 @@ async def main():
         print(e)
     
     try:
-        async with websockets.serve():
-            print("Running o")
+        async with websockets.serve(state_manager, HOST, PORT):
+            print(f"Running on ws://{HOST}:{PORT}")
+            await send_new_donations()
+    finally:
+        print("Attempting to save state... ", end="")
+        with open(SERVER_SAVE_STATE_FILENAME, "w") as saved_state:
+            json.dump(sm.save(), saved_state)
+        print("Done!")
+
+if __name__ == "__main__":
+    asyncio.run(main())
