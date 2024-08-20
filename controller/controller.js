@@ -7,7 +7,8 @@
         "operation": "check"
     });
 
-    let timeout = 250;
+    const base_timeout = 250;
+    let timeout_id = null;
     let auto_reconnect = true;
     const player_fields = ["gm", "p1", "p2", "p3", "p4", "p5", "p6"]
 
@@ -88,7 +89,21 @@
         document.querySelector("#status-box").value = "Error :-(";
     }
 
-    function connectToWebsocketServer() {
+    function clickConnectButton() {
+        clearTimeout(timeout_id);
+        showReconnecting();
+        auto_reconnect = true;
+        connectToWebsocketServer();
+    }
+
+    function clickDisconnectButton() {
+        clearTimeout(timeout_id);
+        auto_reconnect = false;
+        current_socket.close();
+        showDisconnected();
+    }
+
+    function connectToWebsocketServer(current_timeout = base_timeout) {
         current_socket = new WebSocket(WS_SERVER_ADDRESS);
 
         current_socket.onmessage = event => {
@@ -98,7 +113,7 @@
 
         current_socket.onopen = event => {
             console.log("Connected to: ", WS_SERVER_ADDRESS);
-            timeout = 250;
+            timeout_id = null;
             current_socket.send(SEND_CHECK_MESSAGE);
             showConnected();
         };
@@ -109,7 +124,7 @@
             if (auto_reconnect) {
                 console.log("Attempting to reconnect.");
                 showReconnecting();
-                setTimeout(connectToWebsocketServer, timeout += timeout);
+                timeout_id = setTimeout(connectToWebsocketServer, current_timeout, current_timeout + base_timeout);
             }
         };
 
@@ -122,6 +137,8 @@
     }
 
     window.addEventListener("load", () => {
+        document.querySelector("#connect-button").addEventListener("click", clickConnectButton);
+        document.querySelector("#disconnect-button").addEventListener("click", clickDisconnectButton);
         document.querySelector("#update-button").addEventListener("click", updateCurrentState);
         connectToWebsocketServer();
     });
