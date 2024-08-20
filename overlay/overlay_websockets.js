@@ -1,0 +1,112 @@
+const WS_SERVER_ADDRESS = "ws://localhost:8765";
+
+const SEND_CHECK_MESSAGE = JSON.stringify({
+	operation: "check"	
+});
+
+var timeout = 250;
+var auto_reconnect = true;
+var animating = false;
+
+var STATE = {};
+
+var new_donations = [];
+
+function sendState(socket) {
+	let update_message = {
+		operation: "update",
+		data: STATE,
+	}
+	socket.send(JSON.stringify(update_message));
+}
+
+let notification_tone = new Audio("sounds/Information_Bell.ogg");
+
+function prepareDonations(socket, donations) {
+	for (i=0; i<donations.length; i++) {
+		if (i == donations.length-1) {
+			// Send back the new timestamp and donation value.
+			STATE.last_donation_timestamp = donations[i].timestamp;
+			STATE.last_raised = donations[i].new_donation_value;
+			sendState(socket);
+		}
+		new_donations.push(donations[i]);
+	}
+	triggerDonation();
+}
+
+function triggerDonation() {
+	if (new_donations.length > 0 && animating == false) {
+		animating = true;
+		notification_tone.play();
+		let donation = new_donations.shift();
+		let toastProperties = prepareDonationToast(donation.name, donation.amount, donation.message);
+		let toastTimeline = animateToast(toastProperties, donation.new_donation_value);
+		toastTimeline.eventCallback("onComplete", function() {animating = false; triggerDonation();});
+	}
+}
+
+function onStateUpdate() {
+	if ("player_text" in STATE) {
+		let players = STATE.player_text;
+		drawPlayerText(players.gm, players.p1, players.p2, players.p3, players.p4, players.p5, players.p6, STATE.now_playing);
+	}
+	if ("last_raised" in STATE && animating == false) {
+		$("#donation-amount").numberAnimate("set", STATE.last_raised)
+	}
+}
+
+function parseMessage(socket, json) {
+	switch(json.operation) {
+		case "update":
+			STATE = Object.assign(STATE, json.data);
+			console.log("Updated state:")
+			console.log(STATE);
+			onStateUpdate();
+			break;
+		case "new_donations":
+			prepareDonations(socket, json.donations);
+			break;
+		case "check":
+			break;
+		default:
+			console.log("unrecognised JSON");
+			console.log(json)
+			break;
+	}
+}
+
+function connect() {
+	let socket = new WebSocket(WS_SERVER_ADDRESS);
+	
+	socket.onmessage = (event) => {
+		console.log(event.data);
+		parseMessage(socket, JSON.parse(event.data));
+	}
+	
+	// When the socket opens up, check for state changes and reset the timeout.
+	socket.onopen = (event) => {
+		console.log("Connected to ", WS_SERVER_ADDRESS);
+		timeout = 250;
+		socket.send(SEND_CHECK_MESSAGE);
+	}
+	
+	// When the socket closes or errors, attempt to reconnect.
+	socket.onclose = (event) => {
+		console.log("Socket is closed.");
+		if (auto_reconnect) {
+			console.log("Attempting to reconnect.");	
+			setTimeout(connect, timeout+=timeout);
+		}
+	}
+	
+	socket.onerror = (event) => {
+		console.log(event);
+		console.log("Socket encountered an error. Closing Socket.");
+		socket.close();
+	}
+	
+	
+}
+
+window.addEventListener("load", connect);

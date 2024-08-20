@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>RP4L Stream Overlay Controller</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+		<style>
+			textarea {
+				resize: none;
+				font-family:monospace;
+				text-align: center;
+			}
+			#state {
+				text-align: left;	
+			}
+		</style>
+	</head>
+	<body>
+		<div class="row mt-3 mx-3">
+			<div class="col">
+				<div class="card" style="">
+					<div class="card-body">
+						<h5 class="card-title">
+							Update / Refresh
+						</h5>
+						<p class="card-text">
+							Update values using the card on the right, then press the update button to send them to the overlay.
+						</p>
+						<p class="card-text">
+							Press the refresh button to grab the latest data.
+						</p>
+						<button type="button" class="btn btn-success" id="update-button">Update</button>
+						<button type="button" class="btn btn-info" id="refresh-button">Refresh</button>
+
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card" style="">
+					<div class="card-body">
+						<h5 class="card-title">
+							Debug stuff:
+						</h5>
+						<div class="input-group mb-3">
+							<span class="input-group-text" >Status:</span>
+							<input type="text" class="form-control" value="Disconnected" id="status" disabled readonly>
+							<button class="btn btn-outline-secondary" type="button">Connect</button>
+							<button class="btn btn-outline-secondary" type="button">Disconnect</button>
+
+						</div>
+						<div class="input-group mb-3">
+							<textarea class="form-control" rows="20" id="state" readonly></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="card text-center" style="">
+					<div class="card-body">
+						<h5 class="card-title">
+							Table Map
+						</h5>
+						<div class="input-group mb-3">
+							<span class="input-group-text">GM</span>
+							<textarea class="form-control player-text gm-text" rows="4" id="gm"></textarea>
+							<span class="input-group-text">GM</span>
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text">Player 1</span>
+							<textarea class="form-control player-text" rows="4" id="p1"></textarea>
+							<textarea class="form-control player-text" rows="4" id="p4"></textarea>
+							<span class="input-group-text">Player 4</span>
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text">Player 2</span>
+							<textarea class="form-control player-text" rows="4" id="p2"></textarea>
+							<textarea class="form-control player-text" rows="4" id="p5"></textarea>
+							<span class="input-group-text">Player 5</span>
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text">Player 3</span>
+							<textarea class="form-control player-text" rows="4" id="p3"></textarea>
+							<textarea class="form-control player-text" rows="4" id="p6"></textarea>
+							<span class="input-group-text">Player 6</span>
+						</div>
+						<div class="input-group mb-3">
+							<span class="input-group-text">Now Playing:</span>
+							<input type="text" class="form-control" id="now_playing">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="gsap.min.js"></script>
+		<script src="jquery-3.6.1.min.js"></script>
+		<script src="numberAnimate.js"></script>
+		<script src="controller_websocket.js"></script>
+	</body>
+</html>
