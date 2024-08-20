@@ -104,6 +104,17 @@
         showDisconnected();
     }
 
+    function debugClearState() {
+        STATE["player_text"] = {};
+        player_fields.forEach(id => {
+            STATE["player_text"][id] = "";
+        });
+        STATE["now_playing"] = "";
+        STATE["last_donation_timestamp"] = 0;
+        STATE["last_raised"] = "0";
+        sendState();
+    }
+
     function connectToWebsocketServer(current_timeout = base_timeout) {
         current_socket = new WebSocket(WS_SERVER_ADDRESS);
 
@@ -141,6 +152,7 @@
         document.querySelector("#connect-button").addEventListener("click", clickConnectButton);
         document.querySelector("#disconnect-button").addEventListener("click", clickDisconnectButton);
         document.querySelector("#update-button").addEventListener("click", updateCurrentState);
+        document.querySelector("#debug-clear").addEventListener("click", debugClearState);
         showReconnecting();
         connectToWebsocketServer();
     });
