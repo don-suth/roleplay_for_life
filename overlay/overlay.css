@@ -1,17 +1,17 @@
 body {
-    margin: 0px auto;
+    margin: 0 auto;
     overflow: hidden;
 }
 canvas {
-    border: 0px solid black;
+    border: 0 solid black;
     position: fixed;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
 }
 canvas.main {
     position: fixed;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
 }
 canvas.off-screen {
     position: fixed;
@@ -43,13 +43,13 @@ canvas.off-screen {
 #tester {
     display: none;
     position: fixed;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     background-color:green;
     height:1080px;
     width:1920px;
     z-index:-1000;
     /*transform: scale(5.5);*/
     font: small-caps bold 24px/1 "DejaVu Sans", sans-serif;
-    color: "black";
+    color: black;
 }
