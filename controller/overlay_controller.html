@@ -11,90 +11,90 @@
 				font-family:monospace;
 				text-align: center;
 			}
-			#state {
-				text-align: left;	
-			}
 		</style>
 	</head>
 	<body>
-		<div class="row mt-3 mx-3">
-			<div class="col">
-				<div class="card" style="">
-					<div class="card-body">
-						<h5 class="card-title">
-							Update / Refresh
-						</h5>
-						<p class="card-text">
-							Update values using the card on the right, then press the update button to send them to the overlay.
-						</p>
-						<p class="card-text">
-							Press the refresh button to grab the latest data.
-						</p>
-						<button type="button" class="btn btn-success" id="update-button">Update</button>
-						<button type="button" class="btn btn-info" id="refresh-button">Refresh</button>
-
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="card" style="">
-					<div class="card-body">
-						<h5 class="card-title">
-							Debug stuff:
-						</h5>
-						<div class="input-group mb-3">
-							<span class="input-group-text" >Status:</span>
-							<input type="text" class="form-control" value="Disconnected" id="status" disabled readonly>
-							<button class="btn btn-outline-secondary" type="button">Connect</button>
-							<button class="btn btn-outline-secondary" type="button">Disconnect</button>
-
+		<div class="container" style="max-width: 735px;">
+			<div class="card w-100 mb-1">
+				<div class="card-body">
+					<h5 class="card-title">Roleplay 4 Life Overlay Controller</h5>
+					<div class="row justify-content-center gy-3">
+						<div class="col-12 col-md-6">
+							<div class="input-group">
+								<span class="input-group-text" id="status-label">Status:</span>
+								<input type="text" class="form-control font-monospace" aria-labelledby="status-label" value="Reconnecting" width="12" disabled readonly>
+							</div>
 						</div>
-						<div class="input-group mb-3">
-							<textarea class="form-control" rows="20" id="state" readonly></textarea>
+						<div class="col-auto">
+							<button class="btn btn-success" type="button">Connect</button>
+						</div>
+						<div class="col-auto">
+							<button class="btn btn-danger disabled" type="button">Disconnect</button>
+						</div>
+						<div class="col-auto">
+							<button type="button" class="btn btn-info">Help!</button>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col">
-				<div class="card text-center" style="">
+			<div class="card w-100" style="">
 					<div class="card-body">
-						<h5 class="card-title">
+						<h5 class="card-title text-center">
 							Table Map
 						</h5>
-						<div class="input-group mb-3">
-							<span class="input-group-text">GM</span>
-							<textarea class="form-control player-text gm-text" rows="4" id="gm"></textarea>
-							<span class="input-group-text">GM</span>
+						<div class="row g-1 text-center pb-1 justify-content-center">
+							<div class="col-6">
+								<label for="gm">Game Master</label>
+								<textarea class="form-control" rows="4" id="gm"></textarea>
+							</div>
 						</div>
-						<div class="input-group mb-3">
-							<span class="input-group-text">Player 1</span>
-							<textarea class="form-control player-text" rows="4" id="p1"></textarea>
-							<textarea class="form-control player-text" rows="4" id="p4"></textarea>
-							<span class="input-group-text">Player 4</span>
+						<div class="row g-0 pb-1">
+							<div class="col-6">
+								<label for="p1">Player 1</label>
+								<textarea class="form-control" rows="4" id="p1"></textarea>
+							</div>
+							<div class="col-6 text-end">
+								<label for="p4">Player 4</label>
+								<textarea class="form-control" rows="4" id="p4"></textarea>
+							</div>
 						</div>
-						<div class="input-group mb-3">
-							<span class="input-group-text">Player 2</span>
-							<textarea class="form-control player-text" rows="4" id="p2"></textarea>
-							<textarea class="form-control player-text" rows="4" id="p5"></textarea>
-							<span class="input-group-text">Player 5</span>
+						<div class="row g-0 pb-1">
+							<div class="col-6">
+								<label for="p2">Player 2</label>
+								<textarea class="form-control" rows="4" id="p2"></textarea>
+							</div>
+							<div class="col-6 text-end">
+								<label for="p5">Player 5</label>
+								<textarea class="form-control" rows="4" id="p5"></textarea>
+							</div>
 						</div>
-						<div class="input-group mb-3">
-							<span class="input-group-text">Player 3</span>
-							<textarea class="form-control player-text" rows="4" id="p3"></textarea>
-							<textarea class="form-control player-text" rows="4" id="p6"></textarea>
-							<span class="input-group-text">Player 6</span>
+						<div class="row g-0 pb-2">
+							<div class="col-6">
+								<label for="p3">Player 3</label>
+								<textarea class="form-control" rows="4" id="p3"></textarea>
+							</div>
+							<div class="col-6 text-end">
+								<label for="p6">Player 6</label>
+								<textarea class="form-control" rows="4" id="p6"></textarea>
+							</div>
 						</div>
-						<div class="input-group mb-3">
-							<span class="input-group-text">Now Playing:</span>
-							<input type="text" class="form-control" id="now_playing">
+						<div class="row g-0 pb-3">
+							<label for="now-playing">Now Playing:</label>
+							<input class="form-control" type="text" id="now-playing">
+						</div>
+						<div class="row g-0 justify-content-center">
+							<div class="col-5">
+								<button type="button" class="btn btn-success w-100">Update Overlay</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 		</div>
+		<!--
 		<script src="gsap.min.js"></script>
 		<script src="jquery-3.6.1.min.js"></script>
 		<script src="numberAnimate.js"></script>
 		<script src="controller_websocket.js"></script>
+		-->
 	</body>
 </html>
