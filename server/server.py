@@ -9,7 +9,7 @@ from datetime import datetime
 import asyncio
 import websockets
 
-RELAY_FOR_LIFE_PAGE = "https://www.relayforlife.org.au/fundraisers/UnigainsgoesUnisfast"
+RELAY_FOR_LIFE_PAGE = "https://www.relayforlife.org.au/fundraisers/boldbandannas/canberra-2024"
 SERVER_SAVE_STATE_FILENAME = "server_saved_state.json"
 HOST = "localhost"
 PORT = 8765
@@ -55,7 +55,7 @@ async def get_donation_data():
             soup = BeautifulSoup(html, features="html.parser")
         
         donations = soup.find_all(class_="donation")
-        page_total = soup.find(class_="iveRaised").h3.text.strip().strip("$")
+        page_total = soup.find(class_="iveRaised").h3.text.strip().strip("$").replace(",", "")
         visual_total = Decimal()
         new_donations = []
         
