@@ -41,6 +41,7 @@
 
     function updateCurrentState() {
         // Update our state with the content in the text boxes.
+        STATE["player_text"] = {};
         player_fields.forEach(id => {
             STATE["player_text"][id] = document.querySelector("#"+id).value
         });
@@ -69,19 +70,19 @@
 
     function showConnected() {
         document.querySelector("#status-box").value = "Connected";
-        document.querySelector("#connect-button").setAttribute("disabled", "true");
-        document.querySelector("#disconnect-button").setAttribute("disabled", "false");
+        document.querySelector("#connect-button").disabled = true;
+        document.querySelector("#disconnect-button").disabled = false;
     }
 
     function showDisconnected() {
         document.querySelector("#status-box").value = "Disconnected";
-        document.querySelector("#connect-button").setAttribute("disabled", "false");
-        document.querySelector("#disconnect-button").setAttribute("disabled", "true");
+        document.querySelector("#connect-button").disabled = false;
+        document.querySelector("#disconnect-button").disabled = true;
     }
     function showReconnecting() {
         document.querySelector("#status-box").value = "Reconnecting";
-        document.querySelector("#connect-button").setAttribute("disabled", "true");
-        document.querySelector("#disconnect-button").setAttribute("disabled", "false");
+        document.querySelector("#connect-button").disabled = true;
+        document.querySelector("#disconnect-button").disabled = false;
     }
 
     function showError() {
@@ -140,6 +141,7 @@
         document.querySelector("#connect-button").addEventListener("click", clickConnectButton);
         document.querySelector("#disconnect-button").addEventListener("click", clickDisconnectButton);
         document.querySelector("#update-button").addEventListener("click", updateCurrentState);
+        showReconnecting();
         connectToWebsocketServer();
     });
 })()
