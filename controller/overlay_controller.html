@@ -24,15 +24,15 @@
 					<div class="row justify-content-center gy-3">
 						<div class="col-12 col-md-6">
 							<div class="input-group">
-								<span class="input-group-text" id="status-label">Status:</span>
-								<input type="text" class="form-control font-monospace" aria-labelledby="status-label" value="Reconnecting" width="12" disabled readonly>
+								<label for="status-box" class="input-group-text" id="status-label">Status:</label>
+								<input type="text" class="form-control font-monospace" id="status-box" value="Reconnecting" width="12" disabled readonly>
 							</div>
 						</div>
 						<div class="col-auto">
-							<button class="btn btn-success" type="button">Connect</button>
+							<button class="btn btn-success" type="button" id="connect-button">Connect</button>
 						</div>
 						<div class="col-auto">
-							<button class="btn btn-danger disabled" type="button">Disconnect</button>
+							<button class="btn btn-danger disabled" type="button" id="disconnect-button">Disconnect</button>
 						</div>
 						<div class="col-auto">
 							<button type="button" class="btn btn-info">Help!</button>
@@ -87,7 +87,7 @@
 						</div>
 						<div class="row g-0 justify-content-center">
 							<div class="col-5">
-								<button type="button" class="btn btn-success w-100">Update Overlay</button>
+								<button type="button" class="btn btn-success w-100" id="update-button">Update Overlay</button>
 							</div>
 						</div>
 					</div>
@@ -101,7 +101,6 @@
 				</div>
 			</div>
 			</div>
-
 		</div>
 
 		<!--
@@ -111,5 +110,6 @@
 		<script src="controller_websocket.js"></script>
 		-->
 	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+		<script src="controller.js"></script>
 	</body>
 </html>

@@ -1,0 +1,128 @@
+(() => {
+    'use strict'
+
+    const WS_SERVER_ADDRESS = "ws://localhost:8765";
+
+    const SEND_CHECK_MESSAGE = JSON.stringify({
+        "operation": "check"
+    });
+
+    let timeout = 250;
+    let auto_reconnect = true;
+    const player_fields = ["gm", "p1", "p2", "p3", "p4", "p5", "p6"]
+
+    let STATE = {};
+    let current_socket;
+
+    function sendState() {
+        const update_message = {
+            "operation": "update",
+            "data": STATE,
+        }
+        current_socket.send(JSON.stringify(update_message));
+    }
+
+    function onStateUpdate() {
+        // Update the debug text box.
+        document.querySelector("#debug-log").textContent = JSON.stringify(STATE, null, 2);
+        if ("player_text" in STATE) {
+            // Update the GM and player text boxes
+            player_fields.forEach(id => {
+                if (id in STATE["player_text"]) {
+                    document.querySelector("#"+id).value = STATE["player_text"][id];
+                }
+            });
+        }
+        if ("now_playing" in STATE) {
+            document.querySelector("#now-playing").value = STATE["now_playing"];
+        }
+    }
+
+    function updateCurrentState() {
+        // Update our state with the content in the text boxes.
+        player_fields.forEach(id => {
+            STATE["player_text"][id] = document.querySelector("#"+id).value
+        });
+        STATE["now_playing"] = document.querySelector("#now-playing").value;
+        sendState();
+    }
+
+    function parseMessage(json) {
+        switch (json["operation"]) {
+            case "update":
+                STATE = Object.assign(STATE, json["data"]);
+                console.log("Updated state from server.");
+                console.log(STATE);
+                onStateUpdate();
+                break;
+            case "new_donations":
+                break;
+            case "check":
+                break;
+            default:
+                console.log("unrecognised JSON");
+                console.log(json);
+                break;
+        }
+    }
+
+    function showConnected() {
+        document.querySelector("#status-box").value = "Connected";
+        document.querySelector("#connect-button").setAttribute("disabled", "true");
+        document.querySelector("#disconnect-button").setAttribute("disabled", "false");
+    }
+
+    function showDisconnected() {
+        document.querySelector("#status-box").value = "Disconnected";
+        document.querySelector("#connect-button").setAttribute("disabled", "false");
+        document.querySelector("#disconnect-button").setAttribute("disabled", "true");
+    }
+    function showReconnecting() {
+        document.querySelector("#status-box").value = "Reconnecting";
+        document.querySelector("#connect-button").setAttribute("disabled", "true");
+        document.querySelector("#disconnect-button").setAttribute("disabled", "false");
+    }
+
+    function showError() {
+        showDisconnected();
+        document.querySelector("#status-box").value = "Error :-(";
+    }
+
+    function connectToWebsocketServer() {
+        current_socket = new WebSocket(WS_SERVER_ADDRESS);
+
+        current_socket.onmessage = event => {
+            console.log(event.data);
+            parseMessage(JSON.parse(event.data));
+        };
+
+        current_socket.onopen = event => {
+            console.log("Connected to: ", WS_SERVER_ADDRESS);
+            timeout = 250;
+            current_socket.send(SEND_CHECK_MESSAGE);
+            showConnected();
+        };
+
+        current_socket.onclose = event => {
+            console.log("Websocket closed.");
+            showDisconnected();
+            if (auto_reconnect) {
+                console.log("Attempting to reconnect.");
+                showReconnecting();
+                setTimeout(connectToWebsocketServer, timeout += timeout);
+            }
+        };
+
+        current_socket.onerror = event => {
+            console.log(event);
+            console.log("Websocket encountered an error. Closing.");
+            showError();
+            current_socket.close();
+        };
+    }
+
+    window.addEventListener("load", () => {
+        document.querySelector("#update-button").addEventListener("click", updateCurrentState);
+        connectToWebsocketServer();
+    });
+})()
