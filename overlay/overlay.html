@@ -3,63 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Stream overlay</title>
-		<style>
-			body {
-				margin: 0px auto;
-				overflow: hidden;
-			}
-			canvas {
-				border: 0px solid black;
-				position: fixed;
-				left: 0px;
-				top: 0px;
-			}
-			canvas.main {
-				position: fixed;
-				left: 0px;
-				top: 0px;
-			}
-			canvas.off-screen {
-				position: fixed;
-				left: -5000px;
-			}
-			#donation-total {
-				font: small-caps 60px 'DejaVu Sans', sans-serif;
-				position: fixed;
-				top:7px;
-				left:15px;
-				width: 240px;
-				color: white;
-				text-align: center;
-			}
-			#local-time {
-				font: small-caps 60px 'DejaVu Sans', sans-serif;
-				position: fixed;
-				top:10px;
-				left: 1260px;
-				width: 250px;
-				color: white;
-				text-align: center;
-			}
-			#local-time-ampm {
-				position: relative;
-				top: 11px;
-				font: small-caps 40px 'DejaVu Sans Mono', monospace;
-			}
-			#tester {
-				display: none;
-				position: fixed;
-				left: 0px;
-				top: 0px;
-				background-color:green;
-				height:1080px;
-				width:1920px;
-				z-index:-1000;
-				/*transform: scale(5.5);*/
-				font: small-caps bold 24px/1 "DejaVu Sans", sans-serif;
-				color: "black";
-			}
-		</style>
+		<link rel="stylesheet" href="overlay.css">
 	</head>
 	<body>
 		<div id="tester">I am testing things. I am testing things. I am testing things. I am testing things. I am testing things. I am testing things. </div>
