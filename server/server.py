@@ -56,7 +56,6 @@ async def get_donation_data():
         
         donations = soup.find_all(class_="donation")
         page_total = soup.find(class_="iveRaised").h3.text.strip("$")
-        page_total_decimal = Decimal(page_total)
         visual_total = Decimal()
         new_donations = []
         
