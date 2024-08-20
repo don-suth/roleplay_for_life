@@ -11,8 +11,8 @@ import websockets
 
 RELAY_FOR_LIFE_PAGE = "https://www.relayforlife.org.au/fundraisers/UnigainsgoesUnisfast"
 SERVER_SAVE_STATE_FILENAME = "server_saved_state.json"
-HOST = ""
-PORT = ""
+HOST = "localhost"
+PORT = 8765
 
 class StateManager:
     def __init__(self):
