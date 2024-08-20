@@ -109,7 +109,7 @@ function drawStaticText() {
 
 	// More text stuff
 	ctx.font = "small-caps bold 24px 'DejaVu Sans', sans-serif";
-	ctx.fillText("9th ANNUAL ROLEPLAY FOR LIFE by UNIGAMES | 24hrs of RPGS FUNDRAISING FOR THE CANCER COUNCIL | DONATE NOW: BIT.LY/UNIGAINS23", 10, 1070);
+	ctx.fillText("10th ANNUAL ROLEPLAY FOR LIFE by UNIGAMES | 24hrs of RPGs FUNDRAISING for THE CANCER COUNCIL | DONATE NOW: <<update me>>", 10, 1070);
 	ctx.fillText("CURRENTLY PLAYING:", 10, 1020);
 }
 
