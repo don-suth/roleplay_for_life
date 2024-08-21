@@ -28,6 +28,12 @@ let table_coordinate_map = [
 	[tableMapX+(tableMapW/5*4), tableMapY+320],
 ];
 
+let main_border_colour = "#A52A2A"; // "Brown"
+let border_inset_colour = "#FFA07A"; // "LightSalmon"
+let table_diagram_colour = "#8B4513"; // "SaddleBrown"
+let border_highlight_colour = "#F08080"; // "LightCoral"
+let main_border_text_colour = "#FFFFFF"; // "White"
+let border_inset_text_colour = "#000000"; // "Black"
 
 
 function drawLeftBumper(color='#a52a2a', scaleX=1, scaleY=1) {
