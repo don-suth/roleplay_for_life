@@ -35,12 +35,35 @@ let border_highlight_colour = "#F08080"; // "LightCoral"
 let main_border_text_colour = "#FFFFFF"; // "White"
 let border_inset_text_colour = "#000000"; // "Black"
 
+let THEMES = {
+	"main": {
+		"main_border": main_border_colour,
+		"border_inset": border_inset_colour,
+		"table_diagram": table_diagram_colour,
+		"border_highlight": border_highlight_colour,
+		"main_border_text": main_border_text_colour,
+		"border_inset_text": border_inset_text_colour,
+	},
+	"alternate": {
+		"main_border": "#DA70D6", // "Orchid"
+		"border_inset": "#98FB98", // "PaleGreen"
+		"table_diagram": table_diagram_colour,
+		"border_highlight": "#DDA0DD", // "Plum"
+		"main_border_text": main_border_text_colour,
+		"border_inset_text": border_inset_text_colour,
+	}
+}
 
-function drawLeftBumper(color='#a52a2a', scaleX=1, scaleY=1) {
+function drawLeftBumper(color=null, scaleX=1, scaleY=1) {
 	let ctx = leftBumperLayer.getContext("2d");
 	ctx.clearRect(0,0,1920,1080);
 	ctx.save();
-	ctx.fillStyle = color;
+	if (color === null) {
+		ctx.fillStyle = main_border_colour;
+	}
+	else {
+		ctx.fillStyle = color;
+	}
 	ctx.scale(scaleX,scaleY);
 
 	ctx.beginPath();
@@ -56,7 +79,7 @@ function drawLeftBumper(color='#a52a2a', scaleX=1, scaleY=1) {
 function drawRightBumper() {
 	let ctx = rightBumperLayer.getContext("2d");
 	ctx.clearRect(0,0,1920,1080);
-	ctx.fillStyle = 'brown';
+	ctx.fillStyle = main_border_colour;
 
 	ctx.beginPath();
 	ctx.moveTo(1920-400, 0);
@@ -77,10 +100,10 @@ function drawLowerThird() {
 	let ctx = lowerThirdLayer.getContext("2d");
 	ctx.clearRect(0,0,1920,1080);
 
-	ctx.fillStyle = 'brown';
+	ctx.fillStyle = main_border_colour;
 	ctx.fillRect(0, 1080-lowerThirdHeight, lowerThirdWidth, lowerThirdHeight);
 
-	ctx.fillStyle = 'lightsalmon';
+	ctx.fillStyle = border_inset_colour;
 	ctx.fillRect(lowerThirdPadding+topBarOffset, 1080-lowerThirdHeight+lowerThirdPadding, lowerThirdWidth-(2*lowerThirdPadding)-topBarOffset, topBarHeight-(2*lowerThirdPadding));
 }
 
@@ -89,13 +112,13 @@ function drawTableMap() {
 	let ctx = tableMapLayer.getContext("2d");
 	ctx.clearRect(0,0,1920,1080);
 
-	ctx.fillStyle = 'brown';
+	ctx.fillStyle = main_border_colour;
 	ctx.fillRect(tableMapX, tableMapY, tableMapW, tableMapH);
 
-	ctx.fillStyle = 'lightsalmon';
+	ctx.fillStyle = border_inset_colour;
 	ctx.fillRect(tableMapX+5, tableMapY+5, tableMapW-10, tableMapH-10);
 
-	ctx.fillStyle = 'saddlebrown';
+	ctx.fillStyle = table_diagram_colour;
 	ctx.fillRect(tableMapX+(tableMapW/2)-(tableW/2), tableMapY+tableMapH-tableH-5, tableW, tableH);
 	//ctx.fillRect(1670, 775, 100, 300);
 
@@ -106,7 +129,7 @@ function drawStaticText() {
 	ctx.clearRect(0,0,1920,1080);
 	ctx.font = "small-caps bold 16px 'DejaVu Sans', sans-serif";
 	ctx.textAlign = 'start';
-	ctx.fillStyle = 'white';
+	ctx.fillStyle = main_border_text_colour;
 
 	// Top Left 
 	ctx.fillText("RAISED SO FAR THIS YEAR", 10, 95);
