@@ -15,6 +15,8 @@ SERVER_SAVE_STATE_FILENAME = "server_saved_state.json"
 HOST = "localhost"
 PORT = 8765
 
+PASSWORD = "please"
+
 class StateManager:
     def __init__(self):
         self.CLIENTS = set()
@@ -38,20 +40,16 @@ async def handle_first_message(ws_connection: websockets.WebSocketServerProtocol
     except Exception as e:
         print("Received invalid JSON.")
         print(e)
-        await ws_connection.close()
     else:
-        match json_message.get("connection_mode"):
-            case "listener":
-                # Call the "listen only" handler
-                pass
-            case "controller":
-                # Call the "controller" handler
-                pass
-            case None:
-                # Close the connection.
-                await ws_connection.close()
-            
-    
+        password = json_message.get("password")
+        if password == PASSWORD:
+            # Connection allowed
+            pass
+        else:
+            # Close connection
+            pass
+        
+
     
 
 async def handle_json(json_message, source_websocket):
