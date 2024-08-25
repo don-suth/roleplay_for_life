@@ -8,5 +8,5 @@ frozenlist==1.4.1
 idna==3.7
 multidict==6.0.5
 soupsieve==2.6
-websockets==12.0
+websockets==13.0
 yarl==1.9.4
