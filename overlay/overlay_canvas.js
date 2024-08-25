@@ -28,13 +28,6 @@ let table_coordinate_map = [
 	[tableMapX+(tableMapW/5*4), tableMapY+320],
 ];
 
-let main_border_colour = "#A52A2A"; // "Brown"
-let border_inset_colour = "#FFA07A"; // "LightSalmon"
-let table_diagram_colour = "#8B4513"; // "SaddleBrown"
-let border_highlight_colour = "#F08080"; // "LightCoral"
-let main_border_text_colour = "#FFFFFF"; // "White"
-let border_inset_text_colour = "#000000"; // "Black"
-
 const THEMES = {
 	"main": {
 		"main_border": "#A52A2A", // "Brown"
@@ -55,6 +48,7 @@ const THEMES = {
 }
 
 const BASE_PROPERTIES = {
+	"current_theme": "main",
 	"left_bumper_scale_X": 1,
 	"left_bumper_scale_Y": 1,
 	"left_bumper_color": "#A52A2A", // "Brown"
@@ -65,17 +59,12 @@ let current_properties = {
 	...THEMES["main"],
 }
 
-function drawLeftBumper(color=null, scaleX=1, scaleY=1) {
+function drawLeftBumper() {
 	let ctx = leftBumperLayer.getContext("2d");
 	ctx.clearRect(0,0,1920,1080);
 	ctx.save();
-	if (color === null) {
-		ctx.fillStyle = main_border_colour;
-	}
-	else {
-		ctx.fillStyle = color;
-	}
-	ctx.scale(scaleX,scaleY);
+	ctx.fillStyle = current_properties["left_bumper_color"];
+	ctx.scale(current_properties["left_bumper_scale_X"], current_properties["left_bumper_scale_Y"]);
 
 	ctx.beginPath();
 	ctx.moveTo(0, 0);
@@ -90,7 +79,7 @@ function drawLeftBumper(color=null, scaleX=1, scaleY=1) {
 function drawRightBumper() {
 	let ctx = rightBumperLayer.getContext("2d");
 	ctx.clearRect(0,0,1920,1080);
-	ctx.fillStyle = main_border_colour;
+	ctx.fillStyle = current_properties["main_border"];
 
 	ctx.beginPath();
 	ctx.moveTo(1920-400, 0);
@@ -111,10 +100,10 @@ function drawLowerThird() {
 	let ctx = lowerThirdLayer.getContext("2d");
 	ctx.clearRect(0,0,1920,1080);
 
-	ctx.fillStyle = main_border_colour;
+	ctx.fillStyle = current_properties["main_border"];
 	ctx.fillRect(0, 1080-lowerThirdHeight, lowerThirdWidth, lowerThirdHeight);
 
-	ctx.fillStyle = border_inset_colour;
+	ctx.fillStyle = current_properties["border_inset"];
 	ctx.fillRect(lowerThirdPadding+topBarOffset, 1080-lowerThirdHeight+lowerThirdPadding, lowerThirdWidth-(2*lowerThirdPadding)-topBarOffset, topBarHeight-(2*lowerThirdPadding));
 }
 
@@ -123,13 +112,13 @@ function drawTableMap() {
 	let ctx = tableMapLayer.getContext("2d");
 	ctx.clearRect(0,0,1920,1080);
 
-	ctx.fillStyle = main_border_colour;
+	ctx.fillStyle = current_properties["main_border"];
 	ctx.fillRect(tableMapX, tableMapY, tableMapW, tableMapH);
 
-	ctx.fillStyle = border_inset_colour;
+	ctx.fillStyle = current_properties["border_inset"];
 	ctx.fillRect(tableMapX+5, tableMapY+5, tableMapW-10, tableMapH-10);
 
-	ctx.fillStyle = table_diagram_colour;
+	ctx.fillStyle = current_properties["table_diagram"];
 	ctx.fillRect(tableMapX+(tableMapW/2)-(tableW/2), tableMapY+tableMapH-tableH-5, tableW, tableH);
 	//ctx.fillRect(1670, 775, 100, 300);
 
@@ -140,7 +129,7 @@ function drawStaticText() {
 	ctx.clearRect(0,0,1920,1080);
 	ctx.font = "small-caps bold 16px 'DejaVu Sans', sans-serif";
 	ctx.textAlign = 'start';
-	ctx.fillStyle = main_border_text_colour;
+	ctx.fillStyle = current_properties["main_border_text"];
 
 	// Top Left 
 	ctx.fillText("RAISED SO FAR THIS YEAR", 10, 95);
@@ -167,7 +156,7 @@ function drawPlayerText(gm="",p1="",p2="",p3="",p4="",p5="",p6="",now_playing="T
 	let ctx = tableTextLayer.getContext("2d");
 	ctx.clearRect(0,0,1920,1080);
 	ctx.font = "small-caps 18px 'DejaVu Sans', sans-serif";
-	ctx.fillStyle = 'black';
+	ctx.fillStyle = current_properties["border_inset_text"];
 	ctx.textAlign = 'center';
 
 	for (data of coords) {
@@ -235,7 +224,7 @@ function prepareDonationToast(name, amount, message) {
 	toastTextCanvas.width = toastWidth;
 	toastTextCanvas.height = 1080;
 	let toastTextContext = toastTextCanvas.getContext("2d");
-	toastTextContext.fillStyle = "black"
+	toastTextContext.fillStyle = current_properties["border_inset_text"];
 	toastTextContext.font = "small-caps 30px 'DejaVu Sans', sans-serif";
 	toastTextContext.textBaseline = "top";
 	toastTextContext.textAlign = "center";
@@ -260,20 +249,20 @@ function prepareDonationToast(name, amount, message) {
 	let toastCopyContext = toastCopyCanvas.getContext("2d");
 
 	// Toast Header
-	toastHeaderContext.fillStyle = "brown";
+	toastHeaderContext.fillStyle = current_properties["main_border"];
 	toastHeaderContext.fillRect(0,0,toastWidth, toastHeaderHeight);
-	toastHeaderContext.fillStyle = "lightsalmon";
+	toastHeaderContext.fillStyle = current_properties["border_inset"];
 	toastHeaderContext.fillRect(toastBorderPadding, toastBorderPadding, toastWidth-(2*toastBorderPadding), toastHeaderHeight-(2*toastBorderPadding));
-	toastHeaderContext.fillStyle = "black"
+	toastHeaderContext.fillStyle = current_properties["border_inset_text"];
 	toastHeaderContext.font = "small-caps 55px 'DejaVu Sans', sans-serif";
 	toastHeaderContext.textAlign = "center";
 	toastHeaderContext.textBaseline = "top";
 	toastHeaderContext.fillText(name+" donated $"+amount+"!", toastWidth/2, 2*toastBorderPadding, toastWidth-(4*toastBorderPadding));
 
 	// Toast Body
-	toastBodyContext.fillStyle = "brown";
+	toastBodyContext.fillStyle = current_properties["main_border"];
 	toastBodyContext.fillRect(0, 0, toastWidth, toastBodyHeight);
-	toastBodyContext.fillStyle = "lightsalmon";
+	toastBodyContext.fillStyle = current_properties["border_inset"];
 	toastBodyContext.fillRect(toastBorderPadding, 0, toastWidth-(2*toastBorderPadding), toastBodyHeight-toastBorderPadding);
 	toastBodyContext.drawImage(toastTextCanvas, 0, 0); // Copy from the text layer we made above.
 
@@ -366,14 +355,14 @@ function animateToast(toastProperties, newDonationValue) {
 		ease: "none",
 		toastRotation: 21.801,
 	});
-	toastTimeline.to(leftBumperProps, {
-		onUpdate: function() { drawLeftBumper(leftBumperProps.color, leftBumperProps.scaleX, leftBumperProps.scaleY)},
-		onRepeat: function() { $("#donation-amount").numberAnimate("set", newDonationValue) },
+	toastTimeline.to(current_properties, {
+		onUpdate: function() { drawLeftBumper()},
+		onRepeat: function() { showNewDonationTotal(newDonationValue) },
 		duration: 0.8,
 		ease: "none",
-		color: "#f08080",
-		scaleX: 1.1,
-		scaleY: 1.3,
+		"left_bumper_colour": current_properties["border_highlight"],
+		"left_bumper_scale_x": 1.1,
+		"left_bumper_scale_y": 1.3,
 		repeat: 1,
 		yoyo: true,
 	}, "<");
@@ -388,6 +377,30 @@ function animateToast(toastProperties, newDonationValue) {
 	return toastTimeline;
 }
 
+
+function showNewDonationTotal(newDonationTotal) {
+	$("#donation-amount").numberAnimate("set", newDonationTotal);
+	if (current_properties["current_theme"] === "main") {
+		// Animate to new alternate theme
+		current_properties["current_theme"] = "alternate";
+		gsap.to(current_properties, {
+			onUpdate: function() { drawLowerThird(); drawTableMap(); drawRightBumper(); },
+			duration: 1.2,
+			ease: "none",
+			...THEMES["alternate"]
+		});
+	}
+	else {
+		// Animate back
+		current_properties["current_theme"] = "main";
+		gsap.to(current_properties, {
+			onUpdate: function() { drawLowerThird(); drawTableMap(); drawRightBumper(); },
+			duration: 1.2,
+			ease: "none",
+			...THEMES["main"]
+		});
+	}
+}
 
 function testToast() {
 	let properties = prepareDonationToast("", 20, "");
