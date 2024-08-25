@@ -352,17 +352,6 @@ function animateToast(toastProperties, newDonationValue) {
 		ease: "none",
 		toastRotation: 21.801,
 	});
-	toastTimeline.to(current_properties, {
-		onUpdate: function() { drawLeftBumper()},
-		onRepeat: function() { showNewDonationTotal(newDonationValue) },
-		duration: 0.8,
-		ease: "none",
-		"left_bumper_colour": current_properties["border_highlight"],
-		"left_bumper_scale_x": 1.1,
-		"left_bumper_scale_y": 1.3,
-		repeat: 1,
-		yoyo: true,
-	}, "<");
 	toastTimeline.to(toastProperties, {
 		delay: 0,
 		duration: 1,
@@ -370,10 +359,35 @@ function animateToast(toastProperties, newDonationValue) {
 		toastY: -305,
 		ease: "back.in"
 	}, "<");
+	toastTimeline.to(current_properties, {
+		onUpdate: function() { drawLeftBumper()},
+		onComplete: function() { showNewDonationTotal(newDonationValue) },
+		duration: 0.8,
+		ease: "none",
+		"left_bumper_colour": function() { return getCurrentThemeProperties()["border_highlight"] },
+		"left_bumper_scale_x": 1.1,
+		"left_bumper_scale_y": 1.3,
+	}, "<");
+	toastTimeline.to(current_properties, {
+		onUpdate: function() { drawLeftBumper()},
+		delay: 0.01,
+		duration: 0.8,
+		ease: "none",
+		"left_bumper_colour": function() { return getCurrentThemeProperties()["main_border"] },
+		"left_bumper_scale_x": 1,
+		"left_bumper_scale_y": 1,
+	}, ">");
+
 	
 	return toastTimeline;
 }
 
+function getCurrentThemeProperties() {
+	const current_theme_name = current_properties["current_theme"];
+	return {
+		...THEMES[current_theme_name]
+	}
+}
 
 function changeTheme(theme_name, animation_duration=1.2) {
 	current_properties["current_theme"] = theme_name;
