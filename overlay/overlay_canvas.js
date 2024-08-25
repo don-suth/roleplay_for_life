@@ -52,6 +52,8 @@ const BASE_PROPERTIES = {
 	"left_bumper_scale_x": 1,
 	"left_bumper_scale_y": 1,
 	"left_bumper_colour": "#A52A2A", // "Brown"
+	"toast_border": "#A52A2A", // "Brown"
+	"toast_inset": "#FFA07A", // "LightSalmon"
 }
 
 let current_properties = {
@@ -249,9 +251,9 @@ function prepareDonationToast(name, amount, message) {
 	let toastCopyContext = toastCopyCanvas.getContext("2d");
 
 	// Toast Header
-	toastHeaderContext.fillStyle = current_properties["main_border"];
+	toastHeaderContext.fillStyle = current_properties["toast_border"];
 	toastHeaderContext.fillRect(0,0,toastWidth, toastHeaderHeight);
-	toastHeaderContext.fillStyle = current_properties["border_inset"];
+	toastHeaderContext.fillStyle = current_properties["toast_inset"];
 	toastHeaderContext.fillRect(toastBorderPadding, toastBorderPadding, toastWidth-(2*toastBorderPadding), toastHeaderHeight-(2*toastBorderPadding));
 	toastHeaderContext.fillStyle = current_properties["border_inset_text"];
 	toastHeaderContext.font = "small-caps 55px 'DejaVu Sans', sans-serif";
@@ -260,9 +262,9 @@ function prepareDonationToast(name, amount, message) {
 	toastHeaderContext.fillText(name+" donated $"+amount+"!", toastWidth/2, 2*toastBorderPadding, toastWidth-(4*toastBorderPadding));
 
 	// Toast Body
-	toastBodyContext.fillStyle = current_properties["main_border"];
+	toastBodyContext.fillStyle = current_properties["toast_border"];
 	toastBodyContext.fillRect(0, 0, toastWidth, toastBodyHeight);
-	toastBodyContext.fillStyle = current_properties["border_inset"];
+	toastBodyContext.fillStyle = current_properties["toast_inset"];
 	toastBodyContext.fillRect(toastBorderPadding, 0, toastWidth-(2*toastBorderPadding), toastBodyHeight-toastBorderPadding);
 	toastBodyContext.drawImage(toastTextCanvas, 0, 0); // Copy from the text layer we made above.
 
@@ -374,7 +376,9 @@ function animateToast(toastProperties, newDonationValue) {
 
 
 function changeTheme(theme_name, animation_duration=1.2) {
-	current_properties["current_theme"] = theme_name
+	current_properties["current_theme"] = theme_name;
+	current_properties["toast_border"] = THEMES[theme_name]["main_border"];
+	current_properties["toast_inset"] = THEMES[theme_name]["border_inset"];
 	gsap.to(current_properties, {
 		onUpdate: function() { drawLowerThird(); drawTableMap(); drawRightBumper(); },
 		duration: animation_duration,
