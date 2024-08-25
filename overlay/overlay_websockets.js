@@ -20,7 +20,7 @@ function sendState(socket) {
 	socket.send(JSON.stringify(update_message));
 }
 
-let notification_tone = new Audio("sounds/Information_Bell.ogg");
+let notification_tone = new Audio("Information_Bell.ogg");
 
 function prepareDonations(socket, donations) {
 	for (i=0; i<donations.length; i++) {
