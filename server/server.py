@@ -7,7 +7,8 @@ from bs4 import BeautifulSoup
 from decimal import Decimal
 from datetime import datetime
 import asyncio
-import websockets
+import websockets.legacy
+
 
 RELAY_FOR_LIFE_PAGE = "https://www.relayforlife.org.au/fundraisers/UnigainsgoesUnisfast"
 SERVER_SAVE_STATE_FILENAME = "server_saved_state.json"
@@ -29,6 +30,29 @@ class StateManager:
         self.STATE = json_state
 
 sm = StateManager()
+
+async def handle_first_message(ws_connection: websockets.WebSocketServerProtocol):
+    message = await ws_connection.recv()
+    try:
+        json_message = json.loads(message)
+    except Exception as e:
+        print("Received invalid JSON.")
+        print(e)
+        await ws_connection.close()
+    else:
+        match json_message.get("connection_mode"):
+            case "listener":
+                # Call the "listen only" handler
+                pass
+            case "controller":
+                # Call the "controller" handler
+                pass
+            case None:
+                # Close the connection.
+                await ws_connection.close()
+            
+    
+    
 
 async def handle_json(json_message, source_websocket):
     match json_message.get("operation"):
@@ -114,22 +138,22 @@ async def send_new_donations():
             })
             websockets.broadcast(sm.CLIENTS, json_message)
 
-async def state_manager(websocket):
-    sm.CLIENTS.add(websocket)
-    print(f"{websocket.remote_address}: connected")
+async def state_manager(ws_connection: websockets.WebSocketServerProtocol):
+    sm.CLIENTS.add(ws_connection)
+    print(f"{ws_connection.remote_address}: connected")
     try:
-        async for message in websocket:
+        async for message in ws_connection:
             try:
                 json_message = json.loads(message)
             except Exception as e:
                 print(f"Received invalid JSON: {message}")
                 print(e)
                 continue
-            await handle_json(json_message, websocket)
-            print(f"{websocket.remote_address}: {message}")
+            await handle_json(json_message, ws_connection)
+            print(f"{ws_connection.remote_address}: {message}")
     finally:
-        sm.CLIENTS.remove(websocket)
-        print(f"{websocket.remote_address}: disconnected")
+        sm.CLIENTS.remove(ws_connection)
+        print(f"{ws_connection.remote_address}: disconnected")
         
 
 async def main():
