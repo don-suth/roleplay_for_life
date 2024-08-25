@@ -35,23 +35,34 @@ let border_highlight_colour = "#F08080"; // "LightCoral"
 let main_border_text_colour = "#FFFFFF"; // "White"
 let border_inset_text_colour = "#000000"; // "Black"
 
-let THEMES = {
+const THEMES = {
 	"main": {
-		"main_border": main_border_colour,
-		"border_inset": border_inset_colour,
-		"table_diagram": table_diagram_colour,
-		"border_highlight": border_highlight_colour,
-		"main_border_text": main_border_text_colour,
-		"border_inset_text": border_inset_text_colour,
+		"main_border": "#A52A2A", // "Brown"
+		"border_inset": "#FFA07A", // "LightSalmon"
+		"table_diagram": "#8B4513", // "SaddleBrown"
+		"border_highlight": "#F08080", // "LightCoral"
+		"main_border_text": "#FFFFFF", // "White"
+		"border_inset_text": "#000000", // "Black"
 	},
 	"alternate": {
 		"main_border": "#DA70D6", // "Orchid"
 		"border_inset": "#98FB98", // "PaleGreen"
-		"table_diagram": table_diagram_colour,
+		"table_diagram": "#8B4513", // "SaddleBrown"
 		"border_highlight": "#DDA0DD", // "Plum"
-		"main_border_text": main_border_text_colour,
-		"border_inset_text": border_inset_text_colour,
+		"main_border_text": "#FFFFFF", // "White"
+		"border_inset_text": "#000000", // "Black"
 	}
+}
+
+const BASE_PROPERTIES = {
+	"left_bumper_scale_X": 1,
+	"left_bumper_scale_Y": 1,
+	"left_bumper_color": "#A52A2A", // "Brown"
+}
+
+let current_properties = {
+	...BASE_PROPERTIES,
+	...THEMES["main"],
 }
 
 function drawLeftBumper(color=null, scaleX=1, scaleY=1) {
