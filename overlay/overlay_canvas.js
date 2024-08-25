@@ -49,9 +49,9 @@ const THEMES = {
 
 const BASE_PROPERTIES = {
 	"current_theme": "main",
-	"left_bumper_scale_X": 1,
-	"left_bumper_scale_Y": 1,
-	"left_bumper_color": "#A52A2A", // "Brown"
+	"left_bumper_scale_x": 1,
+	"left_bumper_scale_y": 1,
+	"left_bumper_colour": "#A52A2A", // "Brown"
 }
 
 let current_properties = {
@@ -63,8 +63,8 @@ function drawLeftBumper() {
 	let ctx = leftBumperLayer.getContext("2d");
 	ctx.clearRect(0,0,1920,1080);
 	ctx.save();
-	ctx.fillStyle = current_properties["left_bumper_color"];
-	ctx.scale(current_properties["left_bumper_scale_X"], current_properties["left_bumper_scale_Y"]);
+	ctx.fillStyle = current_properties["left_bumper_colour"];
+	ctx.scale(current_properties["left_bumper_scale_x"], current_properties["left_bumper_scale_y"]);
 
 	ctx.beginPath();
 	ctx.moveTo(0, 0);
@@ -323,11 +323,6 @@ function drawToast(canvas, properties) {
 
 function animateToast(toastProperties, newDonationValue) {
 	let canvas = document.getElementById("donation-toast-layer");
-	let leftBumperProps = {
-		color: '#a52a2a',
-		scaleX: 1,
-		scaleY: 1,
-	}
 
 	let toastTimeline = gsap.timeline({ defaults: { onUpdate: function() { drawToast(canvas, toastProperties) } } });
 
@@ -378,38 +373,31 @@ function animateToast(toastProperties, newDonationValue) {
 }
 
 
+function changeTheme(theme_name, animation_duration=1.2) {
+	current_properties["current_theme"] = theme_name
+	gsap.to(current_properties, {
+		onUpdate: function() { drawLowerThird(); drawTableMap(); drawRightBumper(); },
+		duration: animation_duration,
+		ease: "none",
+		...THEMES[theme_name]
+	});
+}
+
+
 function showNewDonationTotal(newDonationTotal) {
 	$("#donation-amount").numberAnimate("set", newDonationTotal);
 	if (current_properties["current_theme"] === "main") {
 		// Animate to new alternate theme
-		current_properties["current_theme"] = "alternate";
-		gsap.to(current_properties, {
-			onUpdate: function() { drawLowerThird(); drawTableMap(); drawRightBumper(); },
-			duration: 1.2,
-			ease: "none",
-			...THEMES["alternate"]
-		});
+		changeTheme("alternate");
 	}
 	else {
 		// Animate back
-		current_properties["current_theme"] = "main";
-		gsap.to(current_properties, {
-			onUpdate: function() { drawLowerThird(); drawTableMap(); drawRightBumper(); },
-			duration: 1.2,
-			ease: "none",
-			...THEMES["main"]
-		});
+		changeTheme("main");
 	}
 }
 
 function testToast() {
 	let properties = prepareDonationToast("", 20, "");
-	let leftBumperProps = {
-		color: '#a52a2a',
-		scaleX: 1,
-		scaleY: 1,
-	}
-	
 
 	animateToast(properties, 2000);
 }
