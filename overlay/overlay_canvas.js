@@ -38,8 +38,8 @@ const THEMES = {
 		"border_inset_text": "#000000", // "Black"
 	},
 	"alternate": {
-		"main_border": "#DA70D6", // "Orchid"
-		"border_inset": "#98FB98", // "PaleGreen"
+		"main_border": "#B12B5E", // "Orchid"
+		"border_inset": "#7EC15B", // "PaleGreen"
 		"table_diagram": "#8B4513", // "SaddleBrown"
 		"border_highlight": "#DDA0DD", // "Plum"
 		"main_border_text": "#FFFFFF", // "White"
