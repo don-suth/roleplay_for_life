@@ -34,6 +34,7 @@ class StateManager:
 sm = StateManager()
 
 async def handle_first_message(ws_connection: websockets.WebSocketServerProtocol):
+    # Currently unused
     message = await ws_connection.recv()
     try:
         json_message = json.loads(message)
@@ -44,7 +45,7 @@ async def handle_first_message(ws_connection: websockets.WebSocketServerProtocol
         password = json_message.get("password")
         if password == PASSWORD:
             # Connection allowed
-            pass
+            await state_manager(ws_connection)
         else:
             # Close connection
             pass
