@@ -257,7 +257,7 @@ function prepareDonationToast(name, amount, message) {
 
 	// Create a canvas that combines the two, for easy masking and copying to the main canvas.
 	let toastCopyCanvas = document.createElement('canvas');
-	toastCopyCanvas.width = toastWidth;
+	toastCopyCanvas.width = toastWidth + toastNiceWidth;
 	toastCopyCanvas.height = toastHeaderHeight + toastBodyHeight;
 	let toastCopyContext = toastCopyCanvas.getContext("2d");
 
@@ -283,7 +283,7 @@ function prepareDonationToast(name, amount, message) {
 	toastNiceContext.fillStyle = current_properties["toast_border"];
 	toastNiceContext.fillRect(0, 0, toastNiceWidth, toastHeaderHeight);
 	toastNiceContext.fillStyle = current_properties["border_inset"];
-	toastNiceContext.fillRect(toastBorderPadding, toastBorderPadding, toastNiceWidth-(2*toastBorderPadding), toastHeaderHeight-(2*toastBorderPadding));
+	toastNiceContext.fillRect(0, toastBorderPadding, toastNiceWidth - toastBorderPadding, toastHeaderHeight-(2*toastBorderPadding));
 	toastNiceContext.fillStyle = current_properties["border_inset_text"];
 	toastNiceContext.font = "small-caps 55px 'DejaVu Sans', sans-serif";
 	toastNiceContext.textAlign = "left";
@@ -333,6 +333,7 @@ function drawToast(canvas, properties) {
 		properties.visibleToastMeme = properties.toastMemeWidth;
 	}
 
+	properties.copyContext.drawImage(properties.memeCanvas, properties.toastWidth - properties.toastMemeWidth + properties.visibleToastMeme, 0);
 	properties.copyContext.drawImage(properties.bodyCanvas, 0, -properties.toastBodyHeight+properties.toastHeaderHeight+properties.visibleToastBody);
 	properties.copyContext.drawImage(properties.headerCanvas, 0, 0);
 
@@ -374,6 +375,12 @@ function animateToast(toastProperties, newDonationValue) {
 		ease: "power4.out",
 		visibleToastBody: 0,
 		toastY: 300,
+	});
+	toastTimeline.to(toastProperties, {
+		delay: 1,
+		duration: 1.3,
+		ease: "power4.out",
+		visibleToastMeme: toastProperties.toastMemeWidth,
 	});
 	toastTimeline.to(toastProperties, {
 		delay: 0.1,
