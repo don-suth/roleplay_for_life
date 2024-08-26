@@ -244,6 +244,17 @@ function prepareDonationToast(name, amount, message) {
 	toastBodyCanvas.height = toastBodyHeight;
 	let toastBodyContext = toastBodyCanvas.getContext("2d");
 
+	// Create a canvas for a meme
+	let toastNiceCanvas = document.createElement("canvas");
+	toastNiceCanvas.width = toastWidth;
+	toastNiceCanvas.height = toastHeaderHeight;
+	let toastNiceContext = toastNiceCanvas.getContext("2d");
+	toastNiceContext.font = "small-caps 55px 'DejaVu Sans', sans-serif";
+	toastNiceContext.textAlign = "left";
+	toastNiceContext.textBaseline = "top";
+	let toastNiceWidth = toastNiceContext.measureText("← Nice").width + (4 * toastBorderPadding);
+
+
 	// Create a canvas that combines the two, for easy masking and copying to the main canvas.
 	let toastCopyCanvas = document.createElement('canvas');
 	toastCopyCanvas.width = toastWidth;
@@ -268,6 +279,18 @@ function prepareDonationToast(name, amount, message) {
 	toastBodyContext.fillRect(toastBorderPadding, 0, toastWidth-(2*toastBorderPadding), toastBodyHeight-toastBorderPadding);
 	toastBodyContext.drawImage(toastTextCanvas, 0, 0); // Copy from the text layer we made above.
 
+	// Meme
+	toastNiceContext.fillStyle = current_properties["toast_border"];
+	toastNiceContext.fillRect(0, 0, toastNiceWidth, toastHeaderHeight);
+	toastNiceContext.fillStyle = current_properties["border_inset"];
+	toastNiceContext.fillRect(toastBorderPadding, toastBorderPadding, toastNiceWidth-(2*toastBorderPadding), toastHeaderHeight-(2*toastBorderPadding));
+	toastNiceContext.fillStyle = current_properties["border_inset_text"];
+	toastNiceContext.font = "small-caps 55px 'DejaVu Sans', sans-serif";
+	toastNiceContext.textAlign = "left";
+	toastNiceContext.textBaseline = "top";
+	toastNiceContext.fillText("← Nice", 2*toastBorderPadding, 2*toastBorderPadding, toastNiceWidth-(4*toastBorderPadding));
+
+
 	toastCopyContext.drawImage(toastHeaderCanvas, 0, 0);
 	toastCopyContext.drawImage(toastBodyCanvas, 0, toastHeaderHeight);
 
@@ -275,12 +298,14 @@ function prepareDonationToast(name, amount, message) {
 		toastWidth: toastWidth,
 		toastHeaderHeight: toastHeaderHeight,
 		toastBodyHeight: toastBodyHeight,
+		toastMemeWidth: toastNiceWidth,
 
 		toastX: 1920+100,
 		toastY: 100,
 		toastRotation: 0,
 
 		visibleToastBody: 0,
+		visibleToastMeme: 0,
 
 		headerCanvas: toastHeaderCanvas,
 		headerContext: toastHeaderContext,
@@ -288,7 +313,8 @@ function prepareDonationToast(name, amount, message) {
 		bodyContext: toastBodyContext,
 		copyCanvas: toastCopyCanvas,
 		copyContext: toastCopyContext,
-
+		memeCanvas: toastNiceCanvas,
+		memeContext: toastNiceContext,
 	};
 
 	return properties;
@@ -302,6 +328,9 @@ function drawToast(canvas, properties) {
 	properties.copyContext.clearRect(0, 0, properties.copyCanvas.width, properties.copyCanvas.height);
 	if (properties.visibleToastBody > properties.toastBodyHeight) {
 		properties.visibleToastBody = properties.toastBodyHeight;
+	}
+	if (properties.visibleToastMeme > properties.toastMemeWidth) {
+		properties.visibleToastMeme = properties.toastMemeWidth;
 	}
 
 	properties.copyContext.drawImage(properties.bodyCanvas, 0, -properties.toastBodyHeight+properties.toastHeaderHeight+properties.visibleToastBody);
