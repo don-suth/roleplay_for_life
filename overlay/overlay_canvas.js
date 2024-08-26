@@ -312,7 +312,7 @@ function drawToast(canvas, properties) {
 	//context.drawImage(properties.copyCanvas, 0-(properties.toastWidth/2), 0-(properties.toastHeaderHeight/2));
 
 	// If rotation is specified, then we rotate around the middle of the header.
-	if (properties.toastRotation != 0) {
+	if (properties.toastRotation !== 0) {
 		context.translate(properties.toastX+(properties.toastWidth/2), properties.toastY+(properties.toastHeaderHeight/2));
 		context.rotate((Math.PI / 180) * properties.toastRotation);
 		context.translate(-(properties.toastX+(properties.toastWidth/2)), -(properties.toastY+(properties.toastHeaderHeight/2)));
