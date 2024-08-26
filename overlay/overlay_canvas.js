@@ -212,12 +212,12 @@ function prepareDonationToast(name, amount, message) {
 	const toastY = 100;
 
 	// If no name, provide one
-	if (name == "") {
+	if (name === "") {
 		name = "Anonymous individual";
 	}
 
 	// If no message was provided, we make our own.
-	if (message == "") {
+	if (message === "") {
 		message = "Thank you "+name+"!";
 	}
 
