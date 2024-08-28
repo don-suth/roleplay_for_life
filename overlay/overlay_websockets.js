@@ -100,6 +100,10 @@ function parseMessage(socket, json) {
 
 function connect() {
 	let socket = new WebSocket(WS_SERVER_ADDRESS);
+
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const password = urlParams.get("password");
 	
 	socket.onmessage = (event) => {
 		console.log(event.data);
@@ -110,7 +114,9 @@ function connect() {
 	socket.onopen = (event) => {
 		console.log("Connected to ", WS_SERVER_ADDRESS);
 		timeout = 250;
-		socket.send(SEND_CHECK_MESSAGE);
+		socket.send(JSON.stringify({
+			"password": password
+		}));
 	}
 	
 	// When the socket closes or errors, attempt to reconnect.

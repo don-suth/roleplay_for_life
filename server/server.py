@@ -45,6 +45,10 @@ async def handle_first_message(ws_connection: websockets.WebSocketServerProtocol
         password = json_message.get("password")
         if password == PASSWORD:
             # Connection allowed
+            await ws_connection.send(json.dumps({
+                "operation": "update",
+                "data": sm.STATE
+            }))
             await state_manager(ws_connection)
         else:
             # Close connection
@@ -164,7 +168,7 @@ async def main():
         print(e)
     
     try:
-        async with websockets.serve(state_manager, HOST, PORT):
+        async with websockets.serve(handle_first_message, HOST, PORT):
             print(f"Running on ws://{HOST}:{PORT}")
             await send_new_donations()
     finally:
