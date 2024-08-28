@@ -51,8 +51,11 @@ async def handle_first_message(ws_connection: websockets.WebSocketServerProtocol
             }))
             await state_manager(ws_connection)
         else:
-            # Close connection
-            pass
+            # Send error and close connection
+            await ws_connection.send(json.dumps({
+                "operation": "error",
+                "message": "Invalid Password."
+            }))
         
 
     
