@@ -51,7 +51,7 @@ const BASE_PROPERTIES = {
 	"current_theme": "order",
 	"left_bumper_scale_x": 1,
 	"left_bumper_scale_y": 1,
-	"left_bumper_colour": "#A52A2A", // "Brown"
+	"left_bumper_highlight_strength": 0, //
 	"toast_border": "#A52A2A", // "Brown"
 	"toast_inset": "#FFA07A", // "LightSalmon"
 }
@@ -65,7 +65,7 @@ function drawLeftBumper() {
 	let ctx = leftBumperLayer.getContext("2d");
 	ctx.clearRect(0,0,1920,1080);
 	ctx.save();
-	ctx.fillStyle = current_properties["left_bumper_colour"];
+	ctx.fillStyle = "color-mix(in srgb, " + current_properties["main_border"] + ", white " + current_properties["left_bumper_highlight_strength"]+"%)";
 	ctx.scale(current_properties["left_bumper_scale_x"], current_properties["left_bumper_scale_y"]);
 
 	ctx.beginPath();
@@ -398,20 +398,20 @@ function animateToast(toastProperties, newDonationDollarValue, newDonationCentsV
 		ease: "back.in"
 	}, "<");
 	toastTimeline.to(current_properties, {
-		onUpdate: function() { drawLeftBumper()},
+		onUpdate: drawBorder,
 		onComplete: function() { showNewDonationTotal(newDonationDollarValue, newDonationCentsValue) },
 		duration: 0.8,
 		ease: "none",
-		"left_bumper_colour": function() { return getCurrentThemeProperties()["border_highlight"] },
+		"left_bumper_highlight_strength": 50,
 		"left_bumper_scale_x": 1.1,
 		"left_bumper_scale_y": 1.3,
 	}, "<");
 	toastTimeline.to(current_properties, {
-		onUpdate: function() { drawLeftBumper()},
+		onUpdate: drawBorder,
 		delay: 0.01,
 		duration: 0.8,
 		ease: "none",
-		"left_bumper_colour": function() { return getCurrentThemeProperties()["main_border"] },
+		"left_bumper_highlight_strength": 0,
 		"left_bumper_scale_x": 1,
 		"left_bumper_scale_y": 1,
 	}, ">");
@@ -432,7 +432,7 @@ function changeTheme(theme_name, animation_duration=1.2) {
 	current_properties["toast_border"] = THEMES[theme_name]["main_border"];
 	current_properties["toast_inset"] = THEMES[theme_name]["border_inset"];
 	gsap.to(current_properties, {
-		onUpdate: function() { drawLowerThird(); drawTableMap(); drawRightBumper(); },
+		onUpdate: drawBorder,
 		duration: animation_duration,
 		ease: "none",
 		...THEMES[theme_name]
@@ -460,11 +460,15 @@ function testToast() {
 
 
 
-function draw() {
+function drawBorder() {
 	drawLeftBumper();
 	drawRightBumper();
 	drawLowerThird();
 	drawTableMap();
+}
+
+function initialDraw() {
+	drawBorder();
 	drawStaticText();
 	drawPlayerText(
 		"GM:\nAlistair\n(he/him)\nLine4",
@@ -475,6 +479,5 @@ function draw() {
 		"Player5\n(he/him)\nLine3\nLine4",
 		"Player6\n(they/them)\nTiefling Paladin\nLine4"
 	);
-	//drawDonationToast();
 }
-window.addEventListener("load", draw);
+window.addEventListener("load", initialDraw);
