@@ -72,10 +72,9 @@ function onStateUpdate() {
 		let players = STATE.player_text;
 		drawPlayerText(players.gm, players.p1, players.p2, players.p3, players.p4, players.p5, players.p6, STATE.now_playing);
 	}
-	if ("last_raised" in STATE && animating == false) {
+	if ("last_raised" in STATE && animating === false) {
 		let last_raised_components = STATE.last_raised.split(".", 2);
-		$("#donation-amount-dollars").numberAnimate("set", last_raised_components[0]);
-		$("#donation-amount-cents").numberAnimate("set", last_raised_components[1]);
+		showNewDonationTotal(last_raised_components[0], last_raised_components[1]);
 	}
 }
 
