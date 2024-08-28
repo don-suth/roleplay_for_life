@@ -29,7 +29,7 @@ let table_coordinate_map = [
 ];
 
 const THEMES = {
-	"main": {
+	"order": {
 		"main_border": "#A52A2A", // "Brown"
 		"border_inset": "#FFA07A", // "LightSalmon"
 		"table_diagram": "#8B4513", // "SaddleBrown"
@@ -37,7 +37,7 @@ const THEMES = {
 		"main_border_text": "#FFFFFF", // "White"
 		"border_inset_text": "#000000", // "Black"
 	},
-	"alternate": {
+	"chaos": {
 		"main_border": "#B12B5E", // "Orchid"
 		"border_inset": "#7EC15B", // "PaleGreen"
 		"table_diagram": "#8B4513", // "SaddleBrown"
@@ -48,7 +48,7 @@ const THEMES = {
 }
 
 const BASE_PROPERTIES = {
-	"current_theme": "main",
+	"current_theme": "order",
 	"left_bumper_scale_x": 1,
 	"left_bumper_scale_y": 1,
 	"left_bumper_colour": "#A52A2A", // "Brown"
@@ -58,7 +58,7 @@ const BASE_PROPERTIES = {
 
 let current_properties = {
 	...BASE_PROPERTIES,
-	...THEMES["main"],
+	...THEMES["order"],
 }
 
 function drawLeftBumper() {
@@ -444,13 +444,11 @@ function showNewDonationTotal(newDonationDollarValue, newDonationCentsValue) {
 	$("#donation-amount-dollars").numberAnimate("set", newDonationDollarValue);
 	$("#donation-amount-cents").numberAnimate("set", newDonationCentsValue);
 
-	if (current_properties["current_theme"] === "main") {
-		// Animate to new alternate theme
-		changeTheme("alternate");
+	if (newDonationCentsValue === "00") {
+		changeTheme("order");
 	}
 	else {
-		// Animate back
-		changeTheme("main");
+		changeTheme("chaos");
 	}
 }
 
