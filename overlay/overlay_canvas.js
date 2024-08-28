@@ -455,7 +455,7 @@ function showNewDonationTotal(newDonationDollarValue, newDonationCentsValue) {
 function testToast() {
 	let properties = prepareDonationToast("", "20", "");
 
-	animateToast(properties, "2000");
+	animateToast(properties, "2000", "00");
 }
 
 
