@@ -461,8 +461,8 @@ function testToast(name="", amount="20", message="", new_dollars="2000", new_cen
 function toggleClock() {
 	let swapTimeline = gsap.timeline({
 		defaults: {
-			ease: "circ.out",
-			duration: 1.2
+			ease: "power4.out",
+			duration: 0.8
 		}
 	});
 	if (current_properties["show_clock_toggle"] === true) {
@@ -472,12 +472,14 @@ function toggleClock() {
 		});
 		swapTimeline.to("#order-chaos-holder", {
 			top: "10px",
+			ease: "back.out"
 		}, "<");
 	}
 	else {
 		current_properties["show_clock_toggle"] = true;
 		swapTimeline.to("#local-time", {
 			top: "10px",
+			ease: "back.out"
 		});
 		swapTimeline.to("#order-chaos-holder", {
 			top: "-100px",
