@@ -65,9 +65,9 @@
 			$(function() {
 				$("#donation-amount-dollars").numberAnimate({animationTimes: [500, 1200, 500]});
 				$("#donation-amount-cents").numberAnimate({animationTimes: [500, 1200, 500]});
-				$("#local-time-hour").numberAnimate();
-				$("#local-time-minute").numberAnimate();
-				$("#local-time-ampm").numberAnimate();
+				$("#local-time-hour").numberAnimate({animationTimes: [500, 1200, 500]});
+				$("#local-time-minute").numberAnimate({animationTimes: [500, 1200, 500]});
+				$("#local-time-ampm").numberAnimate({animationTimes: [500, 1200, 500]});
 				setInterval(update_local_time, 100);
 			});
 			
