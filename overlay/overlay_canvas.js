@@ -372,6 +372,11 @@ function animateToast(toastProperties, newDonationDollarValue, newDonationCentsV
 		ease: "power4.out",
 		visibleToastBody: 0,
 		toastY: 300,
+		onStart: function() {
+			if (getNewTheme(newDonationDollarValue, newDonationCentsValue) !== current_properties["current_theme"]) {
+				hideClock();
+			}
+		}
 	});
 	if (isNice === true) {
 		toastTimeline.to(toastProperties, {
@@ -433,19 +438,26 @@ function changeTheme(theme_name, animation_duration=1.2) {
 		...THEMES[theme_name]
 	});
 	$("#order-chaos").numberAnimate("set", theme_name.toUpperCase());
+
+	if (current_properties["show_clock_toggle"] === false) {
+		setTimeout(showClock, 3000);
+	}
 }
 
+function getNewTheme(newDonationDollarValue, newDonationCentsValue) {
+	if (newDonationCentsValue === "00") {
+		return "order";
+	}
+	else {
+		return "chaos";
+	}
+}
 
 function showNewDonationTotal(newDonationDollarValue, newDonationCentsValue) {
 	$("#donation-amount-dollars").numberAnimate("set", newDonationDollarValue);
 	$("#donation-amount-cents").numberAnimate("set", newDonationCentsValue);
 
-	if (newDonationCentsValue === "00") {
-		changeTheme("order");
-	}
-	else {
-		changeTheme("chaos");
-	}
+	changeTheme(getNewTheme(newDonationDollarValue, newDonationCentsValue));
 }
 
 function testToast(name="", amount="20", message="", new_dollars="2000", new_cents="00") {
@@ -486,6 +498,18 @@ function toggleClock() {
 			ease: "power4.out",
 			top: "-100px",
 		}, "<");
+	}
+}
+
+function showClock() {
+	if (current_properties["show_clock_toggle"] === false) {
+		toggleClock();
+	}
+}
+
+function hideClock() {
+	if (current_properties["show_clock_toggle"] === true) {
+		toggleClock();
 	}
 }
 
