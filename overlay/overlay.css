@@ -34,7 +34,7 @@ canvas.off-screen {
 #local-time {
     font: small-caps 60px 'DejaVu Sans', sans-serif;
     position: fixed;
-    top:10px;
+    top: 10px;
     left: 1260px;
     width: 250px;
     color: white;
@@ -44,6 +44,15 @@ canvas.off-screen {
     position: relative;
     top: 11px;
     font: small-caps 40px 'DejaVu Sans Mono', monospace;
+}
+#order-chaos-holder {
+    font: small-caps 60px 'DejaVu Sans Mono', monospace;
+    position: fixed;
+    top: -100px;
+    left: 1260px;
+    width: 250px;
+    color: white;
+    text-align: center;
 }
 #tester {
     display: none;

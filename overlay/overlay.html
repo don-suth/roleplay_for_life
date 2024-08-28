@@ -20,6 +20,7 @@
 		
 		<span id="donation-total"><span id="donation-total-dollar-sign">$</span><span id="donation-amount-dollars">0</span><span id="donation-amount-period">.</span><span id="donation-amount-cents">00</span></span>
 		<span id="local-time"><span id="local-time-hour">11</span>:<span id="local-time-minute">59</span><span id="local-time-ampm">AM</span></span>
+		<span id="order-chaos-holder"><span id="order-chaos">ORDER</span></span>
 		
 		<script src="gsap.min.js"></script>
 		<script src="jquery-3.6.1.min.js"></script>
@@ -68,6 +69,7 @@
 				$("#local-time-hour").numberAnimate({animationTimes: [500, 1200, 500]});
 				$("#local-time-minute").numberAnimate({animationTimes: [500, 1200, 500]});
 				$("#local-time-ampm").numberAnimate({animationTimes: [500, 1200, 500]});
+				$("#order-chaos").numberAnimate({animationTimes: [500, 1200, 500]});
 				setInterval(update_local_time, 100);
 			});
 			
