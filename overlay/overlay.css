@@ -21,8 +21,8 @@ canvas.off-screen {
     font: small-caps 60px 'DejaVu Sans', sans-serif;
     position: fixed;
     top:7px;
-    left:15px;
-    width: 300px;
+    left: 0;
+    width: 320px;
     color: white;
     text-align: center;
 }
