@@ -62,9 +62,9 @@
             case "check":
                 break;
             case "error":
-                console.log(json["message"]);
                 clickDisconnectButton();
-                showError();
+                setTimeout(showError, 100);
+                document.querySelector("#debug-log").textContent = JSON.stringify(json, null, 2);
                 break;
             default:
                 console.log("unrecognised JSON");
