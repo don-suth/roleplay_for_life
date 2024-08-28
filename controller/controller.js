@@ -61,6 +61,11 @@
                 break;
             case "check":
                 break;
+            case "error":
+                console.log(json["message"]);
+                clickDisconnectButton();
+                showError();
+                break;
             default:
                 console.log("unrecognised JSON");
                 console.log(json);
@@ -126,7 +131,9 @@
         current_socket.onopen = event => {
             console.log("Connected to: ", WS_SERVER_ADDRESS);
             timeout_id = null;
-            current_socket.send(SEND_CHECK_MESSAGE);
+            current_socket.send(JSON.stringify({
+                "password": document.querySelector("#password-field").value
+            }));
             showConnected();
         };
 
@@ -153,7 +160,6 @@
         document.querySelector("#disconnect-button").addEventListener("click", clickDisconnectButton);
         document.querySelector("#update-button").addEventListener("click", updateCurrentState);
         document.querySelector("#debug-clear").addEventListener("click", debugClearState);
-        showReconnecting();
-        connectToWebsocketServer();
+        showDisconnected();
     });
 })()
