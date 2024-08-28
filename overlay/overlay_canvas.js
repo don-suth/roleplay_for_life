@@ -353,7 +353,7 @@ function drawToast(canvas, properties) {
 
 }
 
-function animateToast(toastProperties, newDonationDollarValue, newDonationCentsValue) {
+function animateToast(toastProperties, newDonationDollarValue, newDonationCentsValue, isNice) {
 	let canvas = document.getElementById("donation-toast-layer");
 
 	let toastTimeline = gsap.timeline({ defaults: { onUpdate: function() { drawToast(canvas, toastProperties) } } });
@@ -376,12 +376,14 @@ function animateToast(toastProperties, newDonationDollarValue, newDonationCentsV
 		visibleToastBody: 0,
 		toastY: 300,
 	});
-	toastTimeline.to(toastProperties, {
-		delay: 1,
-		duration: 1.3,
-		ease: "power4.out",
-		visibleToastMeme: toastProperties.toastMemeWidth,
-	});
+	if (isNice === true) {
+		toastTimeline.to(toastProperties, {
+			delay: 1,
+			duration: 1.3,
+			ease: "power4.out",
+			visibleToastMeme: toastProperties.toastMemeWidth,
+		});
+	}
 	toastTimeline.to(toastProperties, {
 		delay: 0.1,
 		duration: 0.5,

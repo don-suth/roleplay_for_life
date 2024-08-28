@@ -53,12 +53,16 @@ function triggerDonation() {
 			toast_donation_value = donation.amount;
 		}
 
+		// If there is a "69" in the donation, enable a "Nice"
+		let isNice = false;
+		if ((donation_amount_components[0] + donation_amount_components[1]).includes("69")) {
+			isNice = true;
+		}
+
 		let new_donation_value_components = donation.new_donation_value.split(".", 2);
 
-
-
 		let toastProperties = prepareDonationToast(donation.name, toast_donation_value, donation.message);
-		let toastTimeline = animateToast(toastProperties, new_donation_value_components[0], new_donation_value_components[1]);
+		let toastTimeline = animateToast(toastProperties, new_donation_value_components[0], new_donation_value_components[1], isNice);
 		toastTimeline.eventCallback("onComplete", function() {animating = false; triggerDonation();});
 	}
 }
