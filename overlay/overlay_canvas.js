@@ -33,7 +33,6 @@ const THEMES = {
 		"main_border": "#A52A2A", // "Brown"
 		"border_inset": "#FFA07A", // "LightSalmon"
 		"table_diagram": "#8B4513", // "SaddleBrown"
-		"border_highlight": "#F08080", // "LightCoral"
 		"main_border_text": "#FFFFFF", // "White"
 		"border_inset_text": "#000000", // "Black"
 	},
@@ -41,7 +40,6 @@ const THEMES = {
 		"main_border": "#B12B5E", // "Orchid"
 		"border_inset": "#7EC15B", // "PaleGreen"
 		"table_diagram": "#8B4513", // "SaddleBrown"
-		"border_highlight": "#DDA0DD", // "Plum"
 		"main_border_text": "#FFFFFF", // "White"
 		"border_inset_text": "#000000", // "Black"
 	}
