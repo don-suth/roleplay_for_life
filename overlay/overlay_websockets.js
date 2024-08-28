@@ -91,6 +91,9 @@ function parseMessage(socket, json) {
 			break;
 		case "check":
 			break;
+		case "error":
+			hideClock();
+			$("#order-chaos").numberAnimate("set", "ERROR");
 		default:
 			console.log("unrecognised JSON");
 			console.log(json)
