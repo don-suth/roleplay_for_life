@@ -40,8 +40,25 @@ function triggerDonation() {
 		animating = true;
 		notification_tone.play();
 		let donation = new_donations.shift();
-		let toastProperties = prepareDonationToast(donation.name, donation.amount, donation.message);
-		let toastTimeline = animateToast(toastProperties, donation.new_donation_value);
+
+		// Handle the donation dollars + cents
+		let donation_amount_components = donation.amount.split(".", 2);
+		let toast_donation_value = "";
+
+		// If the donation is a whole dollar amount, trim the .00 from the end.
+		if (donation_amount_components[1] === "00") {
+			toast_donation_value = donation_amount_components[0];
+		}
+		else {
+			toast_donation_value = donation.amount;
+		}
+
+		let new_donation_value_components = donation.new_donation_value.split(".", 2);
+
+
+
+		let toastProperties = prepareDonationToast(donation.name, toast_donation_value, donation.message);
+		let toastTimeline = animateToast(toastProperties, new_donation_value_components[0], new_donation_value_components[1]);
 		toastTimeline.eventCallback("onComplete", function() {animating = false; triggerDonation();});
 	}
 }

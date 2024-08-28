@@ -353,7 +353,7 @@ function drawToast(canvas, properties) {
 
 }
 
-function animateToast(toastProperties, newDonationValue) {
+function animateToast(toastProperties, newDonationDollarValue, newDonationCentsValue) {
 	let canvas = document.getElementById("donation-toast-layer");
 
 	let toastTimeline = gsap.timeline({ defaults: { onUpdate: function() { drawToast(canvas, toastProperties) } } });
@@ -397,7 +397,7 @@ function animateToast(toastProperties, newDonationValue) {
 	}, "<");
 	toastTimeline.to(current_properties, {
 		onUpdate: function() { drawLeftBumper()},
-		onComplete: function() { showNewDonationTotal(newDonationValue) },
+		onComplete: function() { showNewDonationTotal(newDonationDollarValue, newDonationCentsValue) },
 		duration: 0.8,
 		ease: "none",
 		"left_bumper_colour": function() { return getCurrentThemeProperties()["border_highlight"] },
@@ -438,8 +438,10 @@ function changeTheme(theme_name, animation_duration=1.2) {
 }
 
 
-function showNewDonationTotal(newDonationTotal) {
-	$("#donation-amount").numberAnimate("set", newDonationTotal);
+function showNewDonationTotal(newDonationDollarValue, newDonationCentsValue) {
+	$("#donation-amount-dollars").numberAnimate("set", newDonationDollarValue);
+	$("#donation-amount-cents").numberAnimate("set", newDonationCentsValue);
+
 	if (current_properties["current_theme"] === "main") {
 		// Animate to new alternate theme
 		changeTheme("alternate");
