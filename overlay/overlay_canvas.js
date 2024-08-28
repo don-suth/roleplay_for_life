@@ -446,10 +446,10 @@ function showNewDonationTotal(newDonationDollarValue, newDonationCentsValue) {
 	}
 }
 
-function testToast() {
-	let properties = prepareDonationToast("", "20", "");
+function testToast(name="", amount="20", message="", new_dollars="2000", new_cents="00") {
+	let properties = prepareDonationToast(name, amount, message);
 
-	animateToast(properties, "2000", "00");
+	animateToast(properties, new_dollars, new_cents);
 }
 
 
