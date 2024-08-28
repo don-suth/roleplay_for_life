@@ -78,8 +78,7 @@ async def get_donation_data():
             soup = BeautifulSoup(html, features="html.parser")
         
         donations = soup.find_all(class_="donation")
-        page_total = soup.find(class_="iveRaised").h3.text.strip().strip("$").replace(",", "")
-        visual_total = Decimal()
+        visual_total = Decimal("0.00")
         new_donations = []
         
         for donation in donations:
@@ -91,7 +90,7 @@ async def get_donation_data():
                 pass
             else:
                 donation_comments = donation.find(class_="comments").text.strip()
-                donation_amount = str(Decimal(donation_data["data-amount"]))
+                donation_amount = str(Decimal(donation_data["data-amount"]).quantize(Decimal("1.00")))
                 
                 # In the rare case that someone donates a lot of money,
                 # we might be given a donation that looks like "$21k".
@@ -115,11 +114,8 @@ async def get_donation_data():
             # then calculate the new total value to show.
             new_donations.sort(key=lambda d: d["timestamp"])
             for donation in new_donations:
-                visual_total += Decimal(donation["amount"])
-                donation["new_donation_value"] = str(int(Decimal(sm.STATE["last_raised"])+visual_total))
-                
-            # Make sure the last donation shows the total on the website, regardless.
-            new_donations[-1]["new_donation_value"] = page_total
+                visual_total += Decimal(donation["amount"]).quantize(Decimal("1.00"))
+                donation["new_donation_value"] = str(Decimal(sm.STATE["last_raised"])+visual_total)
         
         # We will receive an updated timestamp from the client,
         # when they successfully receive the donation data.
