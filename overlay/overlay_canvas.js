@@ -50,8 +50,6 @@ const BASE_PROPERTIES = {
 	"left_bumper_scale_x": 1,
 	"left_bumper_scale_y": 1,
 	"left_bumper_highlight_strength": 0, //
-	"toast_border": "#A52A2A", // "Brown"
-	"toast_inset": "#FFA07A", // "LightSalmon"
 }
 
 let current_properties = {
@@ -260,29 +258,29 @@ function prepareDonationToast(name, amount, message) {
 	let toastCopyContext = toastCopyCanvas.getContext("2d");
 
 	// Toast Header
-	toastHeaderContext.fillStyle = current_properties["toast_border"];
+	toastHeaderContext.fillStyle = getCurrentThemeProperties()["main_border"];
 	toastHeaderContext.fillRect(0,0,toastWidth, toastHeaderHeight);
-	toastHeaderContext.fillStyle = current_properties["toast_inset"];
+	toastHeaderContext.fillStyle = getCurrentThemeProperties()["border_inset"];
 	toastHeaderContext.fillRect(toastBorderPadding, toastBorderPadding, toastWidth-(2*toastBorderPadding), toastHeaderHeight-(2*toastBorderPadding));
-	toastHeaderContext.fillStyle = current_properties["border_inset_text"];
+	toastHeaderContext.fillStyle = getCurrentThemeProperties()["border_inset_text"];
 	toastHeaderContext.font = "small-caps 55px 'DejaVu Sans', sans-serif";
 	toastHeaderContext.textAlign = "center";
 	toastHeaderContext.textBaseline = "top";
 	toastHeaderContext.fillText(name+" donated $"+amount+"!", toastWidth/2, 2*toastBorderPadding, toastWidth-(4*toastBorderPadding));
 
 	// Toast Body
-	toastBodyContext.fillStyle = current_properties["toast_border"];
+	toastBodyContext.fillStyle = getCurrentThemeProperties()["main_border"];
 	toastBodyContext.fillRect(0, 0, toastWidth, toastBodyHeight);
-	toastBodyContext.fillStyle = current_properties["toast_inset"];
+	toastBodyContext.fillStyle = getCurrentThemeProperties()["border_inset"];
 	toastBodyContext.fillRect(toastBorderPadding, 0, toastWidth-(2*toastBorderPadding), toastBodyHeight-toastBorderPadding);
 	toastBodyContext.drawImage(toastTextCanvas, 0, 0); // Copy from the text layer we made above.
 
 	// Meme
-	toastNiceContext.fillStyle = current_properties["toast_border"];
+	toastNiceContext.fillStyle = getCurrentThemeProperties()["main_border"];
 	toastNiceContext.fillRect(0, 0, toastNiceWidth, toastHeaderHeight);
-	toastNiceContext.fillStyle = current_properties["border_inset"];
+	toastNiceContext.fillStyle = getCurrentThemeProperties()["border_inset"];
 	toastNiceContext.fillRect(0, toastBorderPadding, toastNiceWidth - toastBorderPadding, toastHeaderHeight-(2*toastBorderPadding));
-	toastNiceContext.fillStyle = current_properties["border_inset_text"];
+	toastNiceContext.fillStyle = getCurrentThemeProperties()["border_inset_text"];
 	toastNiceContext.font = "small-caps 55px 'DejaVu Sans', sans-serif";
 	toastNiceContext.textAlign = "left";
 	toastNiceContext.textBaseline = "top";
@@ -427,8 +425,6 @@ function getCurrentThemeProperties() {
 
 function changeTheme(theme_name, animation_duration=1.2) {
 	current_properties["current_theme"] = theme_name;
-	current_properties["toast_border"] = THEMES[theme_name]["main_border"];
-	current_properties["toast_inset"] = THEMES[theme_name]["border_inset"];
 	gsap.to(current_properties, {
 		onUpdate: drawBorder,
 		duration: animation_duration,
