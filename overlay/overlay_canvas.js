@@ -432,6 +432,7 @@ function changeTheme(theme_name, animation_duration=1.2) {
 		ease: "none",
 		...THEMES[theme_name]
 	});
+	$("#order-chaos").numberAnimate("set", theme_name.toUpperCase());
 }
 
 
@@ -461,13 +462,13 @@ function testToast(name="", amount="20", message="", new_dollars="2000", new_cen
 function toggleClock() {
 	let swapTimeline = gsap.timeline({
 		defaults: {
-			ease: "power4.out",
 			duration: 0.8
 		}
 	});
 	if (current_properties["show_clock_toggle"] === true) {
 		current_properties["show_clock_toggle"] = false;
 		swapTimeline.to("#local-time", {
+			ease: "power4.out",
 			top: "-100px",
 		});
 		swapTimeline.to("#order-chaos-holder", {
@@ -482,6 +483,7 @@ function toggleClock() {
 			ease: "back.out"
 		});
 		swapTimeline.to("#order-chaos-holder", {
+			ease: "power4.out",
 			top: "-100px",
 		}, "<");
 	}
