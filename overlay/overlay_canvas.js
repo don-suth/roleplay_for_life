@@ -70,8 +70,8 @@ function drawLeftBumper() {
 
 	ctx.beginPath();
 	ctx.moveTo(0, 0);
-	ctx.lineTo(300, 0);
-	ctx.lineTo(260, 100);
+	ctx.lineTo(350, 0);
+	ctx.lineTo(310, 100);
 	ctx.lineTo(0,100);
 	ctx.fill();
 	ctx.closePath();
@@ -134,7 +134,7 @@ function drawStaticText() {
 	ctx.fillStyle = current_properties["main_border_text"];
 
 	// Top Left 
-	ctx.fillText("RAISED SO FAR THIS YEAR", 10, 95);
+	ctx.fillText("RAISED SO FAR THIS YEAR", 35, 95);
 	// Top Right
 	ctx.fillText("LOCAL TIME", 1340, 95);
 
@@ -451,9 +451,9 @@ function showNewDonationTotal(newDonationTotal) {
 }
 
 function testToast() {
-	let properties = prepareDonationToast("", 20, "");
+	let properties = prepareDonationToast("", "20", "");
 
-	animateToast(properties, 2000);
+	animateToast(properties, "2000");
 }
 
 

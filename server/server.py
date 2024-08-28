@@ -91,7 +91,7 @@ async def get_donation_data():
                 pass
             else:
                 donation_comments = donation.find(class_="comments").text.strip()
-                donation_amount = donation.find(class_="amount").text.strip().strip("$")
+                donation_amount = str(Decimal(donation_data["data-amount"]))
                 
                 # In the rare case that someone donates a lot of money,
                 # we might be given a donation that looks like "$21k".

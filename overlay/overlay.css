@@ -22,9 +22,14 @@ canvas.off-screen {
     position: fixed;
     top:7px;
     left:15px;
-    width: 240px;
+    width: 300px;
     color: white;
     text-align: center;
+}
+#donation-total-dollar-sign {
+    position: relative;
+    top: -7px;
+    font: small-caps 45px 'DejaVu Sans', sans-serif;
 }
 #local-time {
     font: small-caps 60px 'DejaVu Sans', sans-serif;

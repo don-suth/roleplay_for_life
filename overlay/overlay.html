@@ -18,7 +18,7 @@
 		<canvas id="text-layer" class="main" width="1920" height="1080"></canvas>
 		
 		
-		<span id="donation-total">$<span id="donation-amount">0</span></span>
+		<span id="donation-total"><span id="donation-total-dollar-sign">$</span><span id="donation-amount-dollars">0</span>.<span id="donation-amount-cents">00</span></span>
 		<span id="local-time"><span id="local-time-hour">11</span>:<span id="local-time-minute">59</span><span id="local-time-ampm">AM</span></span>
 		
 		<script src="gsap.min.js"></script>
@@ -63,7 +63,8 @@
 				$("#local-time-ampm").numberAnimate("set", am_pm);
 			}
 			$(function() {
-				$("#donation-amount").numberAnimate({animationTimes: [500, 1200, 500]});
+				$("#donation-amount-dollars").numberAnimate({animationTimes: [500, 1200, 500]});
+				$("#donation-amount-cents").numberAnimate({animationTimes: [500, 1200, 500]});
 				$("#local-time-hour").numberAnimate();
 				$("#local-time-minute").numberAnimate();
 				$("#local-time-ampm").numberAnimate();
