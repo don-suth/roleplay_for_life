@@ -448,8 +448,13 @@ function showNewDonationTotal(newDonationDollarValue, newDonationCentsValue) {
 
 function testToast(name="", amount="20", message="", new_dollars="2000", new_cents="00") {
 	let properties = prepareDonationToast(name, amount, message);
+	let donation_amount_components = amount.split(".", 2);
+	let isNice = false;
+	if (( donation_amount_components[0] + donation_amount_components[1]).includes("69")) {
+		isNice = true;
+	}
 
-	animateToast(properties, new_dollars, new_cents);
+	animateToast(properties, new_dollars, new_cents, isNice);
 }
 
 
