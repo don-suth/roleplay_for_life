@@ -22,7 +22,7 @@ class StateManager:
         self.CLIENTS = set()
         self.STATE = {
             "last_donation_timestamp": 0.0,
-            "last_raised": "0"
+            "last_raised": "0.00"
         }
     
     def save(self):

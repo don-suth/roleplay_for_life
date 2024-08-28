@@ -69,7 +69,9 @@ function onStateUpdate() {
 		drawPlayerText(players.gm, players.p1, players.p2, players.p3, players.p4, players.p5, players.p6, STATE.now_playing);
 	}
 	if ("last_raised" in STATE && animating == false) {
-		$("#donation-amount").numberAnimate("set", STATE.last_raised)
+		let last_raised_components = STATE.last_raised.split(".", 2);
+		$("#donation-amount-dollars").numberAnimate("set", last_raised_components[0]);
+		$("#donation-amount-cents").numberAnimate("set", last_raised_components[1]);
 	}
 }
 

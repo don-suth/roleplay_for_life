@@ -111,7 +111,7 @@
         });
         STATE["now_playing"] = "";
         STATE["last_donation_timestamp"] = 0;
-        STATE["last_raised"] = "0";
+        STATE["last_raised"] = "0.00";
         sendState();
     }
 
