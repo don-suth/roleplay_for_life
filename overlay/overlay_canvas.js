@@ -50,6 +50,7 @@ const BASE_PROPERTIES = {
 	"left_bumper_scale_x": 1,
 	"left_bumper_scale_y": 1,
 	"left_bumper_highlight_strength": 0, //
+	"show_clock_toggle": true,
 }
 
 let current_properties = {
@@ -457,7 +458,32 @@ function testToast(name="", amount="20", message="", new_dollars="2000", new_cen
 	animateToast(properties, new_dollars, new_cents, isNice);
 }
 
-
+function toggleClock() {
+	let swapTimeline = gsap.timeline({
+		defaults: {
+			ease: "circ.out",
+			duration: 1.2
+		}
+	});
+	if (current_properties["show_clock_toggle"] === true) {
+		current_properties["show_clock_toggle"] = false;
+		swapTimeline.to("#local-time", {
+			top: "-100px",
+		});
+		swapTimeline.to("#order-chaos-holder", {
+			top: "10px",
+		}, "<");
+	}
+	else {
+		current_properties["show_clock_toggle"] = true;
+		swapTimeline.to("#local-time", {
+			top: "10px",
+		});
+		swapTimeline.to("#order-chaos-holder", {
+			top: "-100px",
+		}, "<");
+	}
+}
 
 function drawBorder() {
 	drawLeftBumper();
