@@ -18,7 +18,7 @@ else:
 
 
 RELAY_FOR_LIFE_PAGE = "https://www.relayforlife.org.au/fundraisers/UnigainsgoesUnisfast"
-SERVER_SAVE_STATE_FILENAME = "server_saved_state.json"
+SERVER_SAVE_STATE_FILENAME = "state/server_saved_state.json"
 HOST = "localhost"
 PORT = 8765
 
