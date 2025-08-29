@@ -37,8 +37,8 @@ const THEMES = {
 		"border_inset_text": "#000000", // "Black"
 	},
 	"chaos": {
-		"main_border": "#B12B5E", // "Orchid"
-		"border_inset": "#7EC15B", // "PaleGreen"
+		"main_border": "#228B22", // "ForestGreen"
+		"border_inset": "#FFD700", // "Gold"
 		"table_diagram": "#8B4513", // "SaddleBrown"
 		"main_border_text": "#FFFFFF", // "White"
 		"border_inset_text": "#000000", // "Black"
