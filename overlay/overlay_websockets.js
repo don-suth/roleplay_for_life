@@ -1,4 +1,4 @@
-const WS_SERVER_ADDRESS = "ws://localhost:8765";
+const WS_SERVER_ADDRESS = "wss://ritual.gozz.id.au";
 
 const SEND_CHECK_MESSAGE = JSON.stringify({
 	operation: "check"	
