@@ -1,8 +1,6 @@
 services:
   rpforlife-telepathy:
     build: ./server
-    command:
-      - "--name=unigames-asn-telepathy"
     networks:
       - proxy
     labels:
