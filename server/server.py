@@ -17,7 +17,7 @@ else:
     PASSWORD = get_docker_secret("roleplay_server_password")
 
 
-RELAY_FOR_LIFE_PAGE = "https://www.relayforlife.org.au/fundraisers/UnigainsgoesUnisfast"
+RELAY_FOR_LIFE_PAGE = "https://www.relayforlife.org.au/fundraisers/UnigainsgoesUniSFastwithUWASCSwords"
 SERVER_SAVE_STATE_FILENAME = "state/server_saved_state.json"
 HOST = "0.0.0.0"
 PORT = 80
