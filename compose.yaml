@@ -12,6 +12,12 @@ services:
       - "traefik.http.routers.telepathy-web.tls.certresolver=le"
       # Port
       - "traefik.http.services.telepathy-web.loadbalancer.server.port=80"
+    secrets:
+      - roleplay-password
+
+secrets:
+  roleplay-password:
+    file: secrets/password
 
 networks:
   proxy:
