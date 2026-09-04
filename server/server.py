@@ -64,7 +64,6 @@ async def handle_first_message(ws_connection: websockets.WebSocketServerProtocol
             }))
         
 
-    
 
 async def handle_json(json_message, source_websocket):
     match json_message.get("operation"):
@@ -133,18 +132,21 @@ async def get_donation_data():
         # We will receive an updated timestamp from the client,
         # when they successfully receive the donation data.
         return new_donations
-    
+
+
 async def send_new_donations():
     while True:
         await asyncio.sleep(60)
-        new_donations = await get_donation_data()
-        if new_donations:
-            # Send to all clients.
-            json_message = json.dumps({
-                "operation": "new_donations",
-                "donations": new_donations,
-            })
-            websockets.broadcast(sm.CLIENTS, json_message)
+        if len(sm.CLIENTS) > 0:
+            new_donations = await get_donation_data()
+            if new_donations:
+                # Send to all clients.
+                json_message = json.dumps({
+                    "operation": "new_donations",
+                    "donations": new_donations,
+                })
+                websockets.broadcast(sm.CLIENTS, json_message)
+
 
 async def state_manager(ws_connection: websockets.WebSocketServerProtocol):
     sm.CLIENTS.add(ws_connection)
