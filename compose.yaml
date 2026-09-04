@@ -13,10 +13,10 @@ services:
       # Port
       - "traefik.http.services.telepathy-web.loadbalancer.server.port=80"
     secrets:
-      - roleplay-password
+      - roleplay-server-password
 
 secrets:
-  roleplay-password:
+  roleplay-server-password:
     file: secrets/password
 
 networks:
