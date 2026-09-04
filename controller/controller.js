@@ -1,7 +1,7 @@
 (() => {
     'use strict'
 
-    const WS_SERVER_ADDRESS = "wss://ritual.gozz.id.au";
+    const WS_SERVER_ADDRESS = "wss://telepathy.unigames.asn.au";
 
     const SEND_CHECK_MESSAGE = JSON.stringify({
         "operation": "check"
