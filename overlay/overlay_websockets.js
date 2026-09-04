@@ -58,11 +58,16 @@ function triggerDonation() {
 		if ((donation_amount_components[0] + donation_amount_components[1]).includes("69")) {
 			isNice = true;
 		}
+		// Ditto for a "67" for a second meme
+		let isSixSeven = false;
+		if ((donation_amount_components[0] + donation_amount_components[1]).includes("67")) {
+			isSixSeven = true;
+		}
 
 		let new_donation_value_components = donation.new_donation_value.split(".", 2);
 
 		let toastProperties = prepareDonationToast(donation.name, toast_donation_value, donation.message);
-		let toastTimeline = animateToast(toastProperties, new_donation_value_components[0], new_donation_value_components[1], isNice);
+		let toastTimeline = animateToast(toastProperties, new_donation_value_components[0], new_donation_value_components[1], isNice, isSixSeven);
 		toastTimeline.eventCallback("onComplete", function() {animating = false; triggerDonation();});
 	}
 }

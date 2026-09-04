@@ -37,8 +37,8 @@ const THEMES = {
 		"border_inset_text": "#000000", // "Black"
 	},
 	"chaos": {
-		"main_border": "#228B22", // "ForestGreen"
-		"border_inset": "#FFD700", // "Gold"
+		"main_border": "#9400D3", // "DarkViolet"
+		"border_inset": "#DDA0DD", // "Plum"
 		"table_diagram": "#8B4513", // "SaddleBrown"
 		"main_border_text": "#FFFFFF", // "White"
 		"border_inset_text": "#000000", // "Black"
@@ -137,7 +137,7 @@ function drawStaticText() {
 
 	// More text stuff
 	ctx.font = "small-caps bold 24px 'DejaVu Sans', sans-serif";
-	ctx.fillText("11th ANNUAL ROLEPLAY FOR LIFE by UNIGAMES | 24hrs of RPGs FUNDRAISING for THE CANCER COUNCIL | DONATE NOW: BIT.LY/UNIGAINS25", 10, 1070);
+	ctx.fillText("12th ANNUAL ROLEPLAY FOR LIFE by UNIGAMES | 24hrs of RPGs FUNDRAISING for THE CANCER COUNCIL | DONATE NOW: BIT.LY/UNIGAINS26", 5, 1065);
 	ctx.fillText("CURRENTLY PLAYING:", 10, 1020);
 }
 
@@ -251,11 +251,20 @@ function prepareDonationToast(name, amount, message) {
 	toastNiceContext.textBaseline = "top";
 	let toastNiceWidth = toastNiceContext.measureText("← Nice").width + (4 * toastBorderPadding);
 
+	// Create a canvas for a second meme
+	let toastSixSevenCanvas = document.createElement("canvas");
+	toastSixSevenCanvas.width = toastWidth;
+	toastSixSevenCanvas.height = toastHeaderHeight;
+	let toastSixSevenContext = toastSixSevenCanvas.getContext("2d");
+	toastSixSevenContext.font = "small-caps 55px 'DejaVu Sans', sans-serif";
+	toastSixSevenContext.textAlign = "left";
+	toastSixSevenContext.textBaseline = "top";
+	let toastSixSevenWidth = toastSixSevenContext.measureText("Six Seven! ↑ ").width + (4 * toastBorderPadding);
 
 	// Create a canvas that combines the two, for easy masking and copying to the main canvas.
 	let toastCopyCanvas = document.createElement('canvas');
 	toastCopyCanvas.width = toastWidth + toastNiceWidth;
-	toastCopyCanvas.height = toastHeaderHeight + toastBodyHeight;
+	toastCopyCanvas.height = (2*toastHeaderHeight) + toastBodyHeight;
 	let toastCopyContext = toastCopyCanvas.getContext("2d");
 
 	// Toast Header
@@ -287,6 +296,16 @@ function prepareDonationToast(name, amount, message) {
 	toastNiceContext.textBaseline = "top";
 	toastNiceContext.fillText("← Nice", 2*toastBorderPadding, 2*toastBorderPadding, toastNiceWidth-(4*toastBorderPadding));
 
+	// Second Meme
+	toastSixSevenContext.fillStyle = getCurrentThemeProperties()["main_border"];
+	toastSixSevenContext.fillRect(0, 0, toastSixSevenWidth, toastHeaderHeight);
+	toastSixSevenContext.fillStyle = getCurrentThemeProperties()["border_inset"];
+	toastSixSevenContext.fillRect(toastBorderPadding, 0, toastSixSevenWidth - (2*toastBorderPadding), toastHeaderHeight - toastBorderPadding);
+	toastSixSevenContext.fillStyle = getCurrentThemeProperties()["border_inset_text"];
+	toastSixSevenContext.font = "small-caps 55px 'DejaVu Sans', sans-serif";
+	toastSixSevenContext.textAlign = "left";
+	toastSixSevenContext.textBaseline = "top";
+	toastSixSevenContext.fillText("Six Seven! ↑ ", 2*toastBorderPadding, 2*toastBorderPadding, toastSixSevenWidth-(4*toastBorderPadding));
 
 	toastCopyContext.drawImage(toastHeaderCanvas, 0, 0);
 	toastCopyContext.drawImage(toastBodyCanvas, 0, toastHeaderHeight);
@@ -296,6 +315,8 @@ function prepareDonationToast(name, amount, message) {
 		toastHeaderHeight: toastHeaderHeight,
 		toastBodyHeight: toastBodyHeight,
 		toastMemeWidth: toastNiceWidth,
+		toastSixSevenWidth: toastSixSevenWidth,
+		toastSixSevenMaxHeight: toastHeaderHeight,
 
 		toastX: 1920+100,
 		toastY: 100,
@@ -303,6 +324,7 @@ function prepareDonationToast(name, amount, message) {
 
 		visibleToastBody: 0,
 		visibleToastMeme: 0,
+		visibleToastSixSeven: 0,
 
 		headerCanvas: toastHeaderCanvas,
 		headerContext: toastHeaderContext,
@@ -312,6 +334,8 @@ function prepareDonationToast(name, amount, message) {
 		copyContext: toastCopyContext,
 		memeCanvas: toastNiceCanvas,
 		memeContext: toastNiceContext,
+		sixsevenCanvas: toastSixSevenCanvas,
+		sixsevenContext: toastSixSevenContext,
 	};
 
 	return properties;
@@ -329,8 +353,12 @@ function drawToast(canvas, properties) {
 	if (properties.visibleToastMeme > properties.toastMemeWidth) {
 		properties.visibleToastMeme = properties.toastMemeWidth;
 	}
+	if (properties.visibleToastSixSeven > properties.toastSixSevenMaxHeight) {
+		properties.visibleToastSixSeven = properties.toastSixSevenMaxHeight;
+	}
 
 	properties.copyContext.drawImage(properties.memeCanvas, properties.toastWidth - properties.toastMemeWidth + properties.visibleToastMeme, 0);
+	properties.copyContext.drawImage(properties.sixsevenCanvas, properties.toastWidth - properties.toastSixSevenWidth, properties.visibleToastSixSeven);
 	properties.copyContext.drawImage(properties.bodyCanvas, 0, -properties.toastBodyHeight+properties.toastHeaderHeight+properties.visibleToastBody);
 	properties.copyContext.drawImage(properties.headerCanvas, 0, 0);
 
@@ -350,7 +378,7 @@ function drawToast(canvas, properties) {
 
 }
 
-function animateToast(toastProperties, newDonationDollarValue, newDonationCentsValue, isNice) {
+function animateToast(toastProperties, newDonationDollarValue, newDonationCentsValue, isNice, isSixSeven) {
 	let canvas = document.getElementById("donation-toast-layer");
 
 	let toastTimeline = gsap.timeline({ defaults: { onUpdate: function() { drawToast(canvas, toastProperties) } } });
@@ -384,7 +412,15 @@ function animateToast(toastProperties, newDonationDollarValue, newDonationCentsV
 			duration: 1.3,
 			ease: "power4.out",
 			visibleToastMeme: toastProperties.toastMemeWidth,
-		});
+		}, "memes");
+	}
+	if (isSixSeven === true) {
+		toastTimeline.to(toastProperties, {
+			delay: 1,
+			duration: 1.3,
+			ease: "power4.out",
+			visibleToastSixSeven: toastProperties.toastSixSevenMaxHeight,
+		}, "memes");
 	}
 	toastTimeline.to(toastProperties, {
 		delay: 0.1,
@@ -464,11 +500,15 @@ function testToast(name="", amount="20", message="", new_dollars="2000", new_cen
 	let properties = prepareDonationToast(name, amount, message);
 	let donation_amount_components = amount.split(".", 2);
 	let isNice = false;
+	let isSixSeven = false;
 	if (( donation_amount_components[0] + donation_amount_components[1]).includes("69")) {
 		isNice = true;
 	}
+	if (( donation_amount_components[0] + donation_amount_components[1]).includes("67")) {
+		isSixSeven = true;
+	}
 
-	animateToast(properties, new_dollars, new_cents, isNice);
+	animateToast(properties, new_dollars, new_cents, isNice, isSixSeven);
 }
 
 function toggleClock() {
