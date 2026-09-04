@@ -14,7 +14,7 @@ try:
 except ImportError:
     PASSWORD = "please"
 else:
-    PASSWORD = get_docker_secret("roleplay_server_password")
+    PASSWORD = get_docker_secret("roleplay-server-password")
 
 
 RELAY_FOR_LIFE_PAGE = "https://www.relayforlife.org.au/fundraisers/UnigainsgoesUniSFastwithUWASCSwords"
